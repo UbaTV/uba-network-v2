@@ -1,0 +1,5 @@
+hostname: localhost
+port: 3306
+database: uba-network
+username: uba
+password: 123

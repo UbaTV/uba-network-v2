@@ -1,0 +1,13 @@
+name: Hub
+version: 1.0
+main: xyz.ubatv.hub.Main
+description: This plugin was developed by UbaTV
+api-version: 1.16
+authors:
+  - andreubita
+database: true
+website: https://ubatv.xyz
+prefix: HUB
+commands:
+  rank:
+    description: This command was developed by andreubita.
