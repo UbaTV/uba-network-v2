@@ -19,13 +19,13 @@ public class SelectorGUI implements InventoryHolder, Listener {
     public final Inventory gameSelector;
 
     public SelectorGUI(){
-        this.gameSelector = Bukkit.createInventory(this, 9, "§5§lGame §7Selector");
+        this.gameSelector = Bukkit.createInventory(this, 9*3, "§5§lGame §7Selector");
     }
 
     public void createGUI(){
         ItemStack pve = main.itemAPI.item(Material.DIAMOND_SWORD, "§5§lPvE", "§7Click to go to minigame.");
 
-        gameSelector.setItem(4, pve);
+        gameSelector.setItem(13, pve);
     }
 
     @EventHandler
@@ -40,7 +40,7 @@ public class SelectorGUI implements InventoryHolder, Listener {
         Player player = (Player) event.getWhoClicked();
         int slot = event.getSlot();
 
-        if(slot == 4){
+        if(slot == 13){
             player.closeInventory();
             player.sendMessage(main.textUtils.warning + "Minigame still in development.");
         }

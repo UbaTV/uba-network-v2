@@ -9,7 +9,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import xyz.ubatv.hub.Main;
 
 public class HotbarManager implements Listener {
@@ -22,7 +21,7 @@ public class HotbarManager implements Listener {
     public void onJoin(PlayerJoinEvent event){
         Player player = event.getPlayer();
 
-        ItemStack gameSelector = main.itemAPI.item(Material.DIAMOND_SWORD, "§5§lGame §7Selector", "§7Right-click to open this menu.");
+        ItemStack gameSelector = main.itemAPI.item(Material.COMPASS, "§5§lGame §7Selector", "§7Right-click to open this menu.");
         player.getInventory().setItem(4, gameSelector);
     }
 

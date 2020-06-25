@@ -11,3 +11,5 @@ prefix: HUB
 commands:
   rank:
     description: This command was developed by andreubita.
+  bank:
+    description: This command was developed by andreubita.

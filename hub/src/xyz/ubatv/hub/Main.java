@@ -4,6 +4,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import xyz.ubatv.hub.bank.BankCommand;
+import xyz.ubatv.hub.bank.BankTable;
+import xyz.ubatv.hub.bank.PlayerBankManager;
 import xyz.ubatv.hub.hotbar.HotbarManager;
 import xyz.ubatv.hub.hotbar.SelectorGUI;
 import xyz.ubatv.hub.mysql.MySQLConnection;
@@ -28,6 +31,8 @@ public class Main extends JavaPlugin {
     public PlayerDataManager playerDataManager;
     public TextUtils textUtils;
     public ItemAPI itemAPI;
+    public PlayerBankManager playerBankManager;
+    public BankTable bankTable;
 
     @Override
     public void onEnable() {
@@ -55,6 +60,7 @@ public class Main extends JavaPlugin {
     private void registerEvents(){
         PluginManager pluginManager = Bukkit.getServer().getPluginManager();
         pluginManager.registerEvents(new PlayerDataManager(), this);
+        pluginManager.registerEvents(new PlayerBankManager(), this);
         pluginManager.registerEvents(new ChatFormatter(), this);
         pluginManager.registerEvents(new HotbarManager(), this);
         pluginManager.registerEvents(new SelectorGUI(), this);
@@ -62,17 +68,20 @@ public class Main extends JavaPlugin {
 
     private void registerCommands(){
         getCommand("rank").setExecutor(new RankCommand());
+        getCommand("bank").setExecutor(new BankCommand());
     }
 
     private void preLoad(){
         mySQLYML = new MySQLYML();
         mySQLYML.loadConfig();
 
+        bankTable = new BankTable();
         textUtils = new TextUtils();
         itemAPI = new ItemAPI();
         playerDataManager = new PlayerDataManager();
         rankManager = new RankManager();
         playerDataTable = new PlayerDataTable();
+        playerBankManager = new PlayerBankManager();
         mySQL = new MySQLConnection(
                 mySQLYML.getConfig().getString("hostname"),
                 mySQLYML.getConfig().getInt("port"),
