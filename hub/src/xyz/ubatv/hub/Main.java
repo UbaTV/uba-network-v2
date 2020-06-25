@@ -4,13 +4,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import xyz.ubatv.hub.hotbar.HotbarManager;
+import xyz.ubatv.hub.hotbar.SelectorGUI;
 import xyz.ubatv.hub.mysql.MySQLConnection;
 import xyz.ubatv.hub.mysql.MySQLYML;
 import xyz.ubatv.hub.playerData.PlayerData;
 import xyz.ubatv.hub.playerData.PlayerDataManager;
 import xyz.ubatv.hub.playerData.PlayerDataTable;
+import xyz.ubatv.hub.rankSystem.ChatFormatter;
 import xyz.ubatv.hub.rankSystem.RankCommand;
 import xyz.ubatv.hub.rankSystem.RankManager;
+import xyz.ubatv.hub.utils.ItemAPI;
 import xyz.ubatv.hub.utils.TextUtils;
 
 public class Main extends JavaPlugin {
@@ -23,6 +27,7 @@ public class Main extends JavaPlugin {
     public PlayerDataTable playerDataTable;
     public PlayerDataManager playerDataManager;
     public TextUtils textUtils;
+    public ItemAPI itemAPI;
 
     @Override
     public void onEnable() {
@@ -50,6 +55,9 @@ public class Main extends JavaPlugin {
     private void registerEvents(){
         PluginManager pluginManager = Bukkit.getServer().getPluginManager();
         pluginManager.registerEvents(new PlayerDataManager(), this);
+        pluginManager.registerEvents(new ChatFormatter(), this);
+        pluginManager.registerEvents(new HotbarManager(), this);
+        pluginManager.registerEvents(new SelectorGUI(), this);
     }
 
     private void registerCommands(){
@@ -61,6 +69,7 @@ public class Main extends JavaPlugin {
         mySQLYML.loadConfig();
 
         textUtils = new TextUtils();
+        itemAPI = new ItemAPI();
         playerDataManager = new PlayerDataManager();
         rankManager = new RankManager();
         playerDataTable = new PlayerDataTable();

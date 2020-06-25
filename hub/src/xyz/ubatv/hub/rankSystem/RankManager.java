@@ -5,6 +5,20 @@ import java.util.List;
 
 public class RankManager {
 
+    public String rankName(Ranks rank){
+        if(rank.equals(Ranks.VIP)) return "§9VIP";
+        else if(rank.equals(Ranks.VIP_PLUS)) return "§9VIP§6+";
+        else if(rank.equals(Ranks.MVP)) return "§bMVP";
+        else if(rank.equals(Ranks.MVP_PLUS)) return "§bMVP§6+";
+        else if(rank.equals(Ranks.INFLUENCER)) return "§2Influencer";
+        else if(rank.equals(Ranks.BUILDER)) return "§aBuilder";
+        else if(rank.equals(Ranks.MOD)) return "§6MOD";
+        else if(rank.equals(Ranks.ADMIN)) return "§4ADMIN";
+        else if(rank.equals(Ranks.DEV)) return "§dDEV";
+        else if(rank.equals(Ranks.CEO)) return "§5§lCEO";
+        else return "§7";
+    }
+
     public Ranks idToRank(int id){
         if(id == 1) return Ranks.VIP;
         else if(id == 2) return Ranks.VIP_PLUS;
