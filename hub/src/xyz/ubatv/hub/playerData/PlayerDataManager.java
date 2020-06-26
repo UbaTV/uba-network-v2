@@ -1,6 +1,7 @@
 package xyz.ubatv.hub.playerData;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -59,6 +60,7 @@ public class PlayerDataManager implements Listener {
         UUID uuid = player.getUniqueId();
         main.playerDataTable.createPlayer(player);
         createPlayerData(uuid);
+        event.setJoinMessage("§8[§a§l+§8] §5" + player.getName());
     }
 
     @EventHandler
@@ -70,5 +72,6 @@ public class PlayerDataManager implements Listener {
             main.playerDataManager.playerData.remove(uuid);
             data.update();
         }
+        event.setQuitMessage("§8[§c§l-§8] §5" + player.getName());
     }
 }

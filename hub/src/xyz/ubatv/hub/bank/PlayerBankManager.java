@@ -62,7 +62,7 @@ public class PlayerBankManager implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event){
         Player player = event.getPlayer();
         UUID uuid = player.getUniqueId();
-        main.playerDataTable.createPlayer(player);
+        main.bankTable.createPlayer(player);
         createPlayerBank(uuid);
     }
 

@@ -21,6 +21,8 @@ public class HotbarManager implements Listener {
     public void onJoin(PlayerJoinEvent event){
         Player player = event.getPlayer();
 
+        player.getInventory().clear();
+
         ItemStack gameSelector = main.itemAPI.item(Material.COMPASS, "§5§lGame §7Selector", "§7Right-click to open this menu.");
         player.getInventory().setItem(4, gameSelector);
     }
