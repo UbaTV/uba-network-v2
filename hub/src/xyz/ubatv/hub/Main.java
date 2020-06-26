@@ -67,6 +67,7 @@ public class Main extends JavaPlugin {
     }
 
     private void registerCommands(){
+        getCommand("test").setExecutor(new TestCommand());
         getCommand("rank").setExecutor(new RankCommand());
         getCommand("bank").setExecutor(new BankCommand());
     }

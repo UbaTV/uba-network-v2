@@ -13,3 +13,5 @@ commands:
     description: This command was developed by andreubita.
   bank:
     description: This command was developed by andreubita.
+  test:
+    description: This command is just to debug the code.

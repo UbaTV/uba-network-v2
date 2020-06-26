@@ -1,5 +1,6 @@
 package xyz.ubatv.hub.hotbar;
 
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -10,6 +11,9 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import xyz.ubatv.hub.Main;
+import xyz.ubatv.hub.rankSystem.Ranks;
+
+import java.util.UUID;
 
 public class HotbarManager implements Listener {
 
@@ -20,8 +24,10 @@ public class HotbarManager implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event){
         Player player = event.getPlayer();
+        UUID uuid = player.getUniqueId();
 
         player.getInventory().clear();
+        if(!main.playerDataManager.hasPermission(uuid, Ranks.ADMIN)) player.setGameMode(GameMode.ADVENTURE);
 
         ItemStack gameSelector = main.itemAPI.item(Material.COMPASS, "§5§lGame §7Selector", "§7Right-click to open this menu.");
         player.getInventory().setItem(4, gameSelector);
