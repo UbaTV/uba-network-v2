@@ -1,0 +1,10 @@
+name: PvE
+version: 1.0
+main: xyz.ubatv.pve.Main
+description: This plugin was developed by UbaTV
+api-version: 1.16
+authors:
+  - andreubita
+database: true
+website: https://ubatv.xyz
+prefix: PVE
