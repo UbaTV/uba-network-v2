@@ -156,7 +156,6 @@ public class PlayerDataManager implements Listener {
         UUID uuid = player.getUniqueId();
         main.playerDataTable.createPlayer(player);
         createPlayerData(uuid);
-        event.setJoinMessage("§8[§a§l+§8] §5" + player.getName());
     }
 
     @EventHandler
@@ -168,6 +167,6 @@ public class PlayerDataManager implements Listener {
             main.playerDataManager.playerData.remove(uuid);
             data.update();
         }
-        event.setQuitMessage("§8[§c§l-§8] §5" + player.getName());
+
     }
 }

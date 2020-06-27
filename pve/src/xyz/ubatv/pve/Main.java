@@ -1,11 +1,14 @@
 package xyz.ubatv.pve;
 
-import jdk.nashorn.internal.objects.annotations.Setter;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.ubatv.pve.bank.BankTable;
 import xyz.ubatv.pve.bank.PlayerBankManager;
+import xyz.ubatv.pve.game.GameManager;
+import xyz.ubatv.pve.game.MobSpawning;
+import xyz.ubatv.pve.game.PlayerHandler;
 import xyz.ubatv.pve.location.LocationManager;
 import xyz.ubatv.pve.location.LocationYML;
 import xyz.ubatv.pve.mysql.MySQLConnection;
@@ -32,6 +35,8 @@ public class Main extends JavaPlugin {
     public PlayerBankManager playerBankManager;
     public LocationYML locationYML;
     public LocationManager locationManager;
+    public GameManager gameManager;
+    public PlayerHandler playerHandler;
 
     @Override
     public void onEnable() {
@@ -41,12 +46,19 @@ public class Main extends JavaPlugin {
         registerEvents();
 
         preload();
+        gameManager.preloadGame();
+        gameManager.startLobby();
     }
 
     @Override
     public void onDisable() {
         mySQLYML.unload();
         locationYML.unload();
+
+        // Move players to HUB
+        for(Player player : Bukkit.getOnlinePlayers()){
+            playerHandler.connectToHub(player.getUniqueId());
+        }
     }
 
     private void registerCommands(){
@@ -58,6 +70,7 @@ public class Main extends JavaPlugin {
         pluginManager.registerEvents(new ChatFormatter(), this);
         pluginManager.registerEvents(new PlayerDataManager(), this);
         pluginManager.registerEvents(new PlayerBankManager(), this);
+        pluginManager.registerEvents(new MobSpawning(), this);
     }
 
     private void preload(){
@@ -80,6 +93,8 @@ public class Main extends JavaPlugin {
         locationYML = new LocationYML();
         locationYML.loadConfig();
         locationManager = new LocationManager();
+        gameManager = new GameManager();
+        playerHandler = new PlayerHandler();
     }
 
     public MySQLConnection getMySQL() {
