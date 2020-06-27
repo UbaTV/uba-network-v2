@@ -8,3 +8,5 @@ authors:
 database: true
 website: https://ubatv.xyz
 prefix: PVE
+setlocation:
+  description: This command is just a development tool.

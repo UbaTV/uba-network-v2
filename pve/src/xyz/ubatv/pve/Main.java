@@ -11,6 +11,7 @@ import xyz.ubatv.pve.game.MobSpawning;
 import xyz.ubatv.pve.game.PlayerHandler;
 import xyz.ubatv.pve.location.LocationManager;
 import xyz.ubatv.pve.location.LocationYML;
+import xyz.ubatv.pve.location.SetLocationCommand;
 import xyz.ubatv.pve.mysql.MySQLConnection;
 import xyz.ubatv.pve.mysql.MySQLYML;
 import xyz.ubatv.pve.playerData.PlayerDataManager;
@@ -62,7 +63,7 @@ public class Main extends JavaPlugin {
     }
 
     private void registerCommands(){
-
+        getCommand("setlocation").setExecutor(new SetLocationCommand());
     }
 
     private void registerEvents(){
