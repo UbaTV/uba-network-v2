@@ -38,6 +38,16 @@ public class PlayerData {
         this.damageBoost = damageBoost;
     }
 
+    public void update(){
+        main.playerDataManager.setRank(uuid, this.rank);
+        main.pveTable.setSelfRevives(uuid, this.selfRevives);
+        main.pveTable.setTeamRevives(uuid, this.teamRevives);
+        main.pveTable.setMiningSpeed(uuid, this.miningSpeed);
+        main.pveTable.setJumpBoost(uuid, this.jumpBoost);
+        main.pveTable.setHasteBoost(uuid, this.hasteBoost);
+        main.pveTable.setRegenBoost(uuid, this.regenBoost);
+        main.pveTable.setDamageBoost(uuid, this.damageBoost);
+    }
 
     public UUID getUUID() {
         return uuid;
@@ -121,16 +131,5 @@ public class PlayerData {
 
     public void setDamageBoost(int damageBoost) {
         this.damageBoost = damageBoost;
-    }
-
-    public void update(){
-        main.playerDataManager.setRank(uuid, this.rank);
-        main.pveTable.setSelfRevives(uuid, this.selfRevives);
-        main.pveTable.setTeamRevives(uuid, this.teamRevives);
-        main.pveTable.setMiningSpeed(uuid, this.miningSpeed);
-        main.pveTable.setJumpBoost(uuid, this.jumpBoost);
-        main.pveTable.setHasteBoost(uuid, this.hasteBoost);
-        main.pveTable.setRegenBoost(uuid, this.regenBoost);
-        main.pveTable.setDamageBoost(uuid, this.damageBoost);
     }
 }

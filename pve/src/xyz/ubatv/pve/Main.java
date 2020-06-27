@@ -1,10 +1,13 @@
 package xyz.ubatv.pve;
 
+import jdk.nashorn.internal.objects.annotations.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.ubatv.pve.bank.BankTable;
 import xyz.ubatv.pve.bank.PlayerBankManager;
+import xyz.ubatv.pve.location.LocationManager;
+import xyz.ubatv.pve.location.LocationYML;
 import xyz.ubatv.pve.mysql.MySQLConnection;
 import xyz.ubatv.pve.mysql.MySQLYML;
 import xyz.ubatv.pve.playerData.PlayerDataManager;
@@ -27,6 +30,8 @@ public class Main extends JavaPlugin {
     public PvETable pveTable;
     public BankTable bankTable;
     public PlayerBankManager playerBankManager;
+    public LocationYML locationYML;
+    public LocationManager locationManager;
 
     @Override
     public void onEnable() {
@@ -41,6 +46,7 @@ public class Main extends JavaPlugin {
     @Override
     public void onDisable() {
         mySQLYML.unload();
+        locationYML.unload();
     }
 
     private void registerCommands(){
@@ -71,6 +77,9 @@ public class Main extends JavaPlugin {
         rankManager = new RankManager();
         bankTable = new BankTable();
         playerBankManager = new PlayerBankManager();
+        locationYML = new LocationYML();
+        locationYML.loadConfig();
+        locationManager = new LocationManager();
     }
 
     public MySQLConnection getMySQL() {
