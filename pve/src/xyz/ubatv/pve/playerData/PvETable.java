@@ -2,7 +2,6 @@ package xyz.ubatv.pve.playerData;
 
 import org.bukkit.entity.Player;
 import xyz.ubatv.pve.Main;
-import xyz.ubatv.pve.rankSystem.Ranks;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,6 +10,8 @@ import java.util.UUID;
 public class PvETable {
 
     private Main main = Main.getInstance();
+
+    // TODO SELECT * (optimize to only select the needed collum)
 
     public boolean playerExists(UUID uuid){
         try{

@@ -2,6 +2,7 @@ package xyz.ubatv.pve.playerData;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import xyz.ubatv.pve.Main;
@@ -11,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class PlayerDataManager {
+public class PlayerDataManager implements Listener {
 
     private Main main = Main.getInstance();
 
@@ -80,7 +81,7 @@ public class PlayerDataManager {
 
     public int getMiningSpeed(UUID uuid){
         if(playerDataExists(uuid)) return getPlayerData(uuid).getMiningSpeed();
-        else return main.pveTable.getTeamRevives(uuid);
+        else return main.pveTable.getMiningSpeed(uuid);
     }
 
     public void setMiningSpeed(UUID uuid, int miningSpeed){

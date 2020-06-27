@@ -3,6 +3,8 @@ package xyz.ubatv.pve;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import xyz.ubatv.pve.bank.BankTable;
+import xyz.ubatv.pve.bank.PlayerBankManager;
 import xyz.ubatv.pve.mysql.MySQLConnection;
 import xyz.ubatv.pve.mysql.MySQLYML;
 import xyz.ubatv.pve.playerData.PlayerDataManager;
@@ -23,6 +25,8 @@ public class Main extends JavaPlugin {
     public PlayerDataTable playerDataTable;
     public RankManager rankManager;
     public PvETable pveTable;
+    public BankTable bankTable;
+    public PlayerBankManager playerBankManager;
 
     @Override
     public void onEnable() {
@@ -46,6 +50,8 @@ public class Main extends JavaPlugin {
     private void registerEvents(){
         PluginManager pluginManager = Bukkit.getServer().getPluginManager();
         pluginManager.registerEvents(new ChatFormatter(), this);
+        pluginManager.registerEvents(new PlayerDataManager(), this);
+        pluginManager.registerEvents(new PlayerBankManager(), this);
     }
 
     private void preload(){
@@ -63,6 +69,8 @@ public class Main extends JavaPlugin {
         playerDataTable = new PlayerDataTable();
         pveTable = new PvETable();
         rankManager = new RankManager();
+        bankTable = new BankTable();
+        playerBankManager = new PlayerBankManager();
     }
 
     public MySQLConnection getMySQL() {
