@@ -1,5 +1,7 @@
 package xyz.ubatv.pve.events;
 
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,8 +22,13 @@ public class JoinQuitEvent implements Listener {
         UUID uuid = player.getUniqueId();
 
         event.setJoinMessage("§8[§a§l+§8] §5" + player.getName());
-        if(main.gameManager.gameStatus.equals(GameStatus.WAITING)){
-            main.playerHandler.joinGame(uuid);
+        player.getInventory().clear();
+        player.setHealth(20);
+        player.setFoodLevel(20);
+
+        if(main.gameManager.gameStatus.equals(GameStatus.WAITING) || main.gameManager.gameStatus.equals(GameStatus.STARTING)){
+            main.gameManager.waiting.add(uuid);
+            player.setGameMode(GameMode.ADVENTURE);
             player.teleport(main.gameManager.lobby);
         }else{
             main.playerHandler.spectateGame(uuid);
@@ -33,7 +40,12 @@ public class JoinQuitEvent implements Listener {
     public void onQuit(PlayerQuitEvent event){
         Player player = event.getPlayer();
         UUID uuid = player.getUniqueId();
+
         event.setQuitMessage("§8[§c§l-§8] §5" + player.getName());
-        main.playerHandler.removeFromLists(uuid);
+
+        main.gameManager.alive.remove(uuid);
+        main.gameManager.waiting.remove(uuid);
+        main.gameManager.dead.remove(uuid);
+        main.gameManager.spectating.remove(uuid);
     }
 }

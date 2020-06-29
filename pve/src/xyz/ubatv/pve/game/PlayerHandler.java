@@ -19,16 +19,6 @@ public class PlayerHandler {
         player.setGameMode(GameMode.SPECTATOR);
     }
 
-    /* TODO Implement the rest of the GameStates
-       (Currently just WAITING state) */
-    public void joinGame(UUID uuid){
-        Player player = Bukkit.getPlayer(uuid);
-        removeFromLists(uuid);
-        main.gameManager.waiting.add(uuid);
-        assert player != null;
-        player.setGameMode(GameMode.ADVENTURE);
-    }
-
     public void removeFromLists(UUID uuid){
         main.gameManager.waiting.remove(uuid);
         main.gameManager.alive.remove(uuid);

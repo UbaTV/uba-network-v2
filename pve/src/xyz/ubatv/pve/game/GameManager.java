@@ -23,7 +23,7 @@ public class GameManager {
     public final int minPlayer = 2;
     public final int maxPlayer = 4;
     public final int totalRounds = 5;
-    public final int timeDay = 60*5; // 5 minutes
+    public final int timeDay = 60*1; // 5 minutes
 
     public Location lobby = null;
     public Location game = null;
@@ -38,9 +38,9 @@ public class GameManager {
     public ArrayList<UUID> spectating = new ArrayList<>();
 
     public void preloadGame(){
-        lobby = main.locationManager.getLocation("lobby");
-        game = main.locationManager.getLocation("game");
-        for (Entity entity : world.getEntities()) {
+        main.gameManager.lobby = main.locationManager.getLocation("lobby");
+        main.gameManager.game = main.locationManager.getLocation("game");
+        for (Entity entity : main.gameManager.world.getEntities()) {
             if (!(entity instanceof Player) && entity instanceof LivingEntity) {
                 entity.remove();
             }
@@ -51,7 +51,7 @@ public class GameManager {
         changeGameState(GameStatus.WAITING);
 
         new BukkitRunnable() {
-            int countdown = 10;
+            int countdown = 5;
             @Override
             public void run() {
                 if(main.gameManager.waiting.size() >= minPlayer){
@@ -75,72 +75,83 @@ public class GameManager {
 
     public void startGame(){
         changeGameState(GameStatus.ROUND_DAY);
-        currentRound = 1;
-        for(UUID uuid : alive){
+        main.gameManager.currentRound = 1;
+        for(int i = 0; i <= main.gameManager.waiting.size(); i++){
+            UUID uuid = main.gameManager.waiting.get(i);
             Player player = Bukkit.getPlayer(uuid);
             assert player != null;
             player.setGameMode(GameMode.SURVIVAL);
             player.getInventory().clear();
             player.sendTitle("", "§5Day §7Time", 10, 20, 10);
             TextUtils.sendActionBarMessage(player, "§7Gather resources to §5§nfight §7at night.");
+            main.gameManager.alive.add(uuid);
+            main.gameManager.waiting.remove(uuid);
             player.teleport(game);
         }
+
         for(UUID uuid : spectating) {
             Player player = Bukkit.getPlayer(uuid);
             assert player != null;
             player.setGameMode(GameMode.SPECTATOR);
             player.teleport(game);
         }
+
         Bukkit.broadcastMessage("  §8> §7Game Started");
         Bukkit.broadcastMessage("    §7Round §5§l1");
 
-        new BukkitRunnable() {
-            int dayTime = timeDay;
+        new BukkitRunnable(){
             @Override
             public void run() {
-                if(alive.size() == 0){
-                    this.cancel();
-                    endGame(false);
-                }else{
-                    // DAY TIME
-                    if(gameStatus.equals(GameStatus.ROUND_DAY)){
-                        if(dayTime <= 0){
-                            Bukkit.broadcastMessage("§7Day time ended");
-                            changeGameState(GameStatus.ROUND_NIGHT);
-                            mobsToKill = MobSpawning.mobsAtRound(currentRound);
-                            sendDayNightTitle(false);
+                new BukkitRunnable() {
+                    int dayTime = timeDay;
+                    @Override
+                    public void run() {
+                        if(main.gameManager.alive.size() == 0){
+                            cancel();
+                            endGame(false);
                         }else{
-                            if(dayTime == 60 || dayTime == 30 || dayTime == 10 || dayTime <= 5){
-                                Bukkit.broadcastMessage("§5§l" + dayTime + " §7seconds until night time");
-                            }
-                        }
-                        dayTime--;
-                    // NIGHT TIME
-                    }else{
-                        if(mobsToKill <= 0){
-                            if(currentRound == 5){
-                                this.cancel();
-                                endGame(true);
+                            // DAY TIME
+                            if(gameStatus.equals(GameStatus.ROUND_DAY)){
+                                if(dayTime <= 0){
+                                    Bukkit.broadcastMessage(" §5§l> §7Day time ended");
+                                    changeGameState(GameStatus.ROUND_NIGHT);
+                                    main.gameManager.mobsToKill = MobSpawning.mobsAtRound(currentRound);
+                                    sendDayNightTitle(false);
+                                    dayTime = timeDay;
+                                }else{
+                                    if(dayTime == 60 || dayTime == 30 || dayTime == 10 || dayTime <= 5){
+                                        Bukkit.broadcastMessage("§5§l" + dayTime + " §7seconds until night time");
+                                    }
+                                }
+                                dayTime--;
+                                // NIGHT TIME
                             }else{
-                                changeGameState(GameStatus.ROUND_DAY);
-                                currentRound++;
-                                Bukkit.broadcastMessage("    §7Round §5§l" + currentRound);
-                                sendDayNightTitle(true);
+                                if(main.gameManager.mobsToKill <= 0){
+                                    if(main.gameManager.currentRound == totalRounds){
+                                        this.cancel();
+                                        endGame(true);
+                                    }else{
+                                        changeGameState(GameStatus.ROUND_DAY);
+                                        main.gameManager.currentRound++;
+                                        Bukkit.broadcastMessage("    §7Round §5§l" + main.gameManager.currentRound);
+                                        sendDayNightTitle(true);
+                                    }
+                                }
                             }
                         }
                     }
-                }
+                }.runTaskTimer(main, 0, 20);
             }
-        }.runTaskTimer(main, 0, 20);
+        }.runTaskLater(main, 20);
     }
 
     public void endGame(boolean victory){
         Bukkit.broadcastMessage("  §8> §7Game Ended");
-        Bukkit.broadcastMessage("    §7Survived Rounds§8: §5§l" + (victory ? 5 : currentRound-1));
+        Bukkit.broadcastMessage("    §7Survived Rounds§8: §5§l" + (victory ? 5 : main.gameManager.currentRound-1));
 
         for(Player player : Bukkit.getOnlinePlayers()){
             player.setGameMode(GameMode.SPECTATOR);
-            player.teleport(game);
+            player.teleport(main.gameManager.game);
         }
 
         new BukkitRunnable(){
@@ -155,6 +166,8 @@ public class GameManager {
         for(Player player : Bukkit.getOnlinePlayers()){
             main.playerHandler.connectToHub(player.getUniqueId());
         }
+
+        // TODO RELOAD SERVER
     }
 
     // day (true) night (false)
@@ -164,26 +177,26 @@ public class GameManager {
                 Player player = Bukkit.getPlayer(uuid);
                 assert player != null;
                 player.sendTitle("", "§5Day §7Time", 10, 20, 10);
-                TextUtils.sendActionBarMessage(player, "§7Gather resources to §5§nfight §7at night.");
+                TextUtils.sendActionBarMessage(player, "§7Gather resources to §5§nfight§7 at night.");
             }
             for(UUID uuid : dead){
                 Player player = Bukkit.getPlayer(uuid);
                 assert player != null;
                 player.sendTitle("", "§5Day §7Time", 10, 20, 10);
-                TextUtils.sendActionBarMessage(player, "§7Gather resources to §5§nfight §7at night.");
+                TextUtils.sendActionBarMessage(player, "§7Gather resources to §5§nfight§7 at night.");
             }
         }else{
             for(UUID uuid : alive){
                 Player player = Bukkit.getPlayer(uuid);
                 assert player != null;
                 player.sendTitle("", "§5Night §7Time", 10, 20, 10);
-                TextUtils.sendActionBarMessage(player, "§7Time to§5§nfight");
+                TextUtils.sendActionBarMessage(player, "§7Time to §5§nfight");
             }
             for(UUID uuid : dead){
                 Player player = Bukkit.getPlayer(uuid);
                 assert player != null;
                 player.sendTitle("", "§5Night §7Time", 10, 20, 10);
-                TextUtils.sendActionBarMessage(player, "§7Time to§5§nfight");
+                TextUtils.sendActionBarMessage(player, "§7Time to §5§nfight");
             }
         }
     }

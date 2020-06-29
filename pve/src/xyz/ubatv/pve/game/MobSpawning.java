@@ -1,5 +1,6 @@
 package xyz.ubatv.pve.game;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
@@ -21,6 +22,7 @@ public class MobSpawning implements Listener {
                 Player player = entity.getKiller();
                 if(main.gameManager.gameStatus.equals(GameStatus.ROUND_NIGHT)){
                     main.gameManager.mobsToKill--;
+                    Bukkit.broadcastMessage(main.gameManager.mobsToKill + "");
                 }
             }
         }
