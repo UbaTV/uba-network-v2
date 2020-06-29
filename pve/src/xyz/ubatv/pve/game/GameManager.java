@@ -54,7 +54,7 @@ public class GameManager {
             int countdown = 10;
             @Override
             public void run() {
-                if(waiting.size() >= minPlayer){
+                if(main.gameManager.waiting.size() >= minPlayer){
                     if(countdown <= 0){
                         this.cancel();
                         startGame();
@@ -190,7 +190,7 @@ public class GameManager {
 
     public void changeGameState(GameStatus gameState){
         if(gameStatus != gameState){
-            changeGameState(gameState);
+            main.gameManager.gameStatus = gameState;
             // TODO Send game state change to bungee server
         }
     }

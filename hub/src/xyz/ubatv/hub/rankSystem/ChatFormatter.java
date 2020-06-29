@@ -17,6 +17,14 @@ public class ChatFormatter implements Listener {
         Player player = event.getPlayer();
         UUID uuid = player.getUniqueId();
         Ranks rank = main.playerDataManager.getRank(uuid);
-        event.setFormat(main.rankManager.rankName(rank) + " §5" + player.getName() + "§8§l: §7" + event.getMessage());
+        if(rank.equals(Ranks.DEFAULT)){
+            event.setFormat("§7" + player.getName() + "§8§l: §7" + event.getMessage());
+        }else{
+            if(player.getName().equalsIgnoreCase("andreubita")){
+                event.setFormat(main.rankManager.rankName(rank) + " §7§n" + player.getName() + "§8§l: §7" + event.getMessage());
+            }else{
+                event.setFormat(main.rankManager.rankName(rank) + " §7" + player.getName() + "§8§l: §7" + event.getMessage());
+            }
+        }
     }
 }

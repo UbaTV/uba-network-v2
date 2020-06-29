@@ -22,8 +22,10 @@ public class JoinQuitEvent implements Listener {
         event.setJoinMessage("§8[§a§l+§8] §5" + player.getName());
         if(main.gameManager.gameStatus.equals(GameStatus.WAITING)){
             main.playerHandler.joinGame(uuid);
+            player.teleport(main.gameManager.lobby);
         }else{
             main.playerHandler.spectateGame(uuid);
+            player.teleport(main.gameManager.game);
         }
     }
 

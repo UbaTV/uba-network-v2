@@ -25,7 +25,7 @@ public class LocationManager {
 
     public Location getLocation(String locationName){
         FileConfiguration config = main.locationYML.getConfig();
-        World world = Bukkit.getWorld(Objects.requireNonNull(config.getString(locationName + ".World")));
+        World world = Bukkit.getWorld(Objects.requireNonNull(config.getString(locationName + ".world")));
         double x = config.getDouble(locationName + ".x"),
                y = config.getDouble(locationName + ".y"),
                z = config.getDouble(locationName + ".z");

@@ -6,6 +6,8 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.ubatv.pve.bank.BankTable;
 import xyz.ubatv.pve.bank.PlayerBankManager;
+import xyz.ubatv.pve.events.EntityDamage;
+import xyz.ubatv.pve.events.JoinQuitEvent;
 import xyz.ubatv.pve.game.GameManager;
 import xyz.ubatv.pve.game.MobSpawning;
 import xyz.ubatv.pve.game.PlayerHandler;
@@ -71,7 +73,9 @@ public class Main extends JavaPlugin {
         pluginManager.registerEvents(new ChatFormatter(), this);
         pluginManager.registerEvents(new PlayerDataManager(), this);
         pluginManager.registerEvents(new PlayerBankManager(), this);
+        pluginManager.registerEvents(new JoinQuitEvent(), this);
         pluginManager.registerEvents(new MobSpawning(), this);
+        pluginManager.registerEvents(new EntityDamage(), this);
     }
 
     private void preload(){
