@@ -31,7 +31,8 @@ public class RankCommand implements CommandExecutor {
                         return false;
                     }
                     main.playerDataManager.setRank(uuid, rank);
-                    player.sendMessage(main.textUtils.right + "Your rank has been changed."); // TODO Show rank name
+                    player.sendMessage(main.textUtils.right + "Your rank has been changed to " + main.rankManager.rankName(rank));
+                    main.playerDataManager.updateListName(player);
                 }catch (IllegalArgumentException e){
                     player.sendMessage(main.textUtils.error + "Invalid rank.");
                 }
@@ -61,8 +62,9 @@ public class RankCommand implements CommandExecutor {
                     return false;
                 }
                 main.playerDataManager.setRank(targetUUID, rank);
-                sender.sendMessage(main.textUtils.right + "You changed §5" + target.getName() + "§7's rank.");
-                target.sendMessage(main.textUtils.warning + "Your rank has been changed.");
+                sender.sendMessage(main.textUtils.right + "You changed §5" + target.getName() + "§7's rank to" + main.rankManager.rankName(rank));
+                target.sendMessage(main.textUtils.warning + "Your rank has been changed " + main.rankManager.rankName(rank));
+                main.playerDataManager.updateListName(target);
             }catch (IllegalArgumentException e){
                 sender.sendMessage(main.textUtils.error + "Invalid rank.");
             }
