@@ -8,7 +8,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import xyz.ubatv.hub.bank.BankCommand;
 import xyz.ubatv.hub.bank.BankTable;
 import xyz.ubatv.hub.bank.PlayerBankManager;
+import xyz.ubatv.hub.events.HealthFoodManager;
 import xyz.ubatv.hub.events.JoinQuitEvent;
+import xyz.ubatv.hub.events.PlaceBreakBlock;
 import xyz.ubatv.hub.hotbar.HotbarManager;
 import xyz.ubatv.hub.hotbar.SelectorGUI;
 import xyz.ubatv.hub.mysql.MySQLConnection;
@@ -72,6 +74,8 @@ public class Main extends JavaPlugin {
         pluginManager.registerEvents(new HotbarManager(), this);
         pluginManager.registerEvents(new SelectorGUI(), this);
         pluginManager.registerEvents(new ScoreboardManager(), this);
+        pluginManager.registerEvents(new HealthFoodManager(), this);
+        pluginManager.registerEvents(new PlaceBreakBlock(), this);
     }
 
     private void registerCommands(){

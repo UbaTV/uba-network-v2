@@ -14,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import xyz.ubatv.hub.Main;
 import xyz.ubatv.hub.rankSystem.Ranks;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class HotbarManager implements Listener {
@@ -21,6 +22,7 @@ public class HotbarManager implements Listener {
     private Main main = Main.getInstance();
 
     private SelectorGUI selectorGUI = new SelectorGUI();
+    private ArrayList<Player> hidden = new ArrayList<>();
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event){
@@ -32,10 +34,15 @@ public class HotbarManager implements Listener {
 
         ItemStack gameSelector = gameSelector();
         player.getInventory().setItem(4, gameSelector);
-        ItemStack hidePlayers = hidePlayers(main.playerDataManager.getPlayersHidden(uuid));
+        ItemStack hidePlayers = hidePlayers(!main.playerDataManager.getPlayersHidden(uuid));
         player.getInventory().setItem(8, hidePlayers);
 
         toggleVisibility(player);
+        if(!hidden.isEmpty()){
+            for(Player target : hidden){
+                target.hidePlayer(main, player);
+            }
+        }
     }
 
     @EventHandler
@@ -47,13 +54,26 @@ public class HotbarManager implements Listener {
             selectorGUI.openInventory(player);
         }
 
-        if(event.getItem().getType() == Material.REDSTONE){
+        if(event.getItem().getType() == Material.REDSTONE || event.getItem().getType() == Material.GLOWSTONE_DUST){
             Player player = event.getPlayer();
-            toggleVisibility(player);
             boolean visibility = main.playerDataManager.getPlayersHidden(player.getUniqueId());
+            toggleVisibility(player);
             player.sendMessage(main.textUtils.right + "All players are now " + (visibility ? "§avisible" : "§chidden"));
+            if(!visibility) hidden.add(player);
             main.playerDataManager.setPlayersHidden(player.getUniqueId(), !visibility);
             player.getInventory().setItem(8, hidePlayers(!visibility));
+        }
+    }
+
+    private void toggleVisibility(Player player) {
+        if(main.playerDataManager.getPlayersHidden(player.getUniqueId())){
+            for(Player target : Bukkit.getOnlinePlayers()){
+                player.showPlayer(main, target);
+            }
+        }else{
+            for(Player target : Bukkit.getOnlinePlayers()){
+                player.hidePlayer(main, target);
+            }
         }
     }
 
@@ -66,7 +86,7 @@ public class HotbarManager implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent event){
         Player player = event.getPlayer();
-        player.getInventory().clear();
+        hidden.remove(player);
     }
 
     public ItemStack gameSelector(){
@@ -77,17 +97,5 @@ public class HotbarManager implements Listener {
         ItemStack vanish = main.itemAPI.item(Material.REDSTONE, "§7Visibility: §c§lOff", "§7Right-click to §nshow§r§7 all players");
         ItemStack show = main.itemAPI.item(Material.GLOWSTONE_DUST, "§7Visibility: §a§lOn", "§7Right-click to §nhide§r§7 all players");
         return hidden ? vanish : show;
-    }
-
-    private void toggleVisibility(Player player) {
-        if(main.playerDataManager.getPlayersHidden(player.getUniqueId())){
-            for(Player target : Bukkit.getOnlinePlayers()){
-                player.showPlayer(main, target);
-            }
-        }else{
-            for(Player target : Bukkit.getOnlinePlayers()){
-                player.showPlayer(main, target);
-            }
-        }
     }
 }
