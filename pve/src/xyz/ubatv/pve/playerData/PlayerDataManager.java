@@ -150,6 +150,10 @@ public class PlayerDataManager implements Listener {
         return r >= n;
     }
 
+    public void updateTablistName(Player player){
+        String rankName = main.rankManager.rankName(getRank(player.getUniqueId()));
+    }
+
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event){
         Player player = event.getPlayer();

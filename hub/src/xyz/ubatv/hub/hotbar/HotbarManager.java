@@ -19,6 +19,8 @@ import java.util.UUID;
 
 public class HotbarManager implements Listener {
 
+    // TODO Add cooldown to player visibility - redo
+
     private Main main = Main.getInstance();
 
     private SelectorGUI selectorGUI = new SelectorGUI();

@@ -16,6 +16,13 @@ public class JoinQuitEvent implements Listener {
         Player player = event.getPlayer();
 
         event.setJoinMessage("§8[§a§l+§8] §5" + player.getName());
+
+        player.sendMessage(" ");
+        main.textUtils.sendCenteredMessage(player, "§7Welcome to the " + main.textUtils.serverName + "§7!");
+        player.sendMessage(" ");
+        main.textUtils.sendCenteredMessage(player, "§7Website: §5ubatv.xyz");
+        main.textUtils.sendCenteredMessage(player, "§7Discord: §5discord.gg/AJxFu2C");
+        player.sendMessage(" ");
     }
 
     @EventHandler
