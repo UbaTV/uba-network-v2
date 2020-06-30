@@ -183,8 +183,7 @@ public class GameManager {
         for(Player player : Bukkit.getOnlinePlayers()){
             main.playerHandler.connectToHub(player.getUniqueId());
         }
-
-        // TODO RELOAD SERVER
+        Bukkit.shutdown();
     }
 
     // day (true) night (false)

@@ -75,7 +75,7 @@ public class PlayerDataTable {
 
     public void setPlayersHidden(UUID uuid, boolean hiddenPlayers){
         try{
-            main.mySQL.updateSQL("UPDATE userData SET hidePlayers='" + hiddenPlayers + "' WHERE uuid='" + uuid.toString() + "';");
+            main.mySQL.updateSQL("UPDATE userData SET hidePlayers='" + (hiddenPlayers ? "1" : "0") + "' WHERE uuid='" + uuid.toString() + "';");
         }catch (SQLException | ClassNotFoundException e){
             e.printStackTrace();
         }

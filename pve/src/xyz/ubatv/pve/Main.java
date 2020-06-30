@@ -66,8 +66,10 @@ public class Main extends JavaPlugin {
         locationYML.unload();
 
         // Move players to HUB
-        for(Player player : Bukkit.getOnlinePlayers()){
-            playerHandler.connectToHub(player.getUniqueId());
+        if(Bukkit.getOnlinePlayers().size() != 0){
+            for(Player player : Bukkit.getOnlinePlayers()){
+                playerHandler.connectToHub(player.getUniqueId());
+            }
         }
     }
 

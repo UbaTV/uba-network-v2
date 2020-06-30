@@ -16,7 +16,7 @@ public class RankManager {
         else if(rank.equals(Ranks.ADMIN)) return "§4ADMIN";
         else if(rank.equals(Ranks.DEV)) return "§dDEV";
         else if(rank.equals(Ranks.CEO)) return "§5§lCEO";
-        else return "§7";
+        else return "§7Default";
     }
 
     public Ranks idToRank(int id){

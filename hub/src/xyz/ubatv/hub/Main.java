@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import xyz.ubatv.hub.bank.BankCommand;
 import xyz.ubatv.hub.bank.BankTable;
 import xyz.ubatv.hub.bank.PlayerBankManager;
@@ -18,6 +19,8 @@ import xyz.ubatv.hub.playerData.PlayerDataTable;
 import xyz.ubatv.hub.rankSystem.ChatFormatter;
 import xyz.ubatv.hub.rankSystem.RankCommand;
 import xyz.ubatv.hub.rankSystem.RankManager;
+import xyz.ubatv.hub.scoreboard.ScoreboardHelper;
+import xyz.ubatv.hub.scoreboard.ScoreboardManager;
 import xyz.ubatv.hub.utils.ItemAPI;
 import xyz.ubatv.hub.utils.TextUtils;
 
@@ -47,6 +50,8 @@ public class Main extends JavaPlugin {
         for(Player online : Bukkit.getOnlinePlayers()){
             playerDataManager.createPlayerData(online.getUniqueId());
         }
+
+        updateScoreboards();
     }
 
     @Override
@@ -66,6 +71,7 @@ public class Main extends JavaPlugin {
         pluginManager.registerEvents(new ChatFormatter(), this);
         pluginManager.registerEvents(new HotbarManager(), this);
         pluginManager.registerEvents(new SelectorGUI(), this);
+        pluginManager.registerEvents(new ScoreboardManager(), this);
     }
 
     private void registerCommands(){
@@ -92,6 +98,32 @@ public class Main extends JavaPlugin {
                 mySQLYML.getConfig().getString("password"),
                 mySQLYML.getConfig().getString("database")
         );
+    }
+
+    private void updateScoreboards(){
+        new BukkitRunnable(){
+            @Override
+            public void run() {
+                for(Player player : Bukkit.getOnlinePlayers()){
+                    if(ScoreboardHelper.hasScoreboard(player)){
+                        // Tab Header and Footer
+                        int online = Bukkit.getServer().getOnlinePlayers().size();
+                        int max = Bukkit.getServer().getMaxPlayers();
+                        player.setPlayerListHeaderFooter(
+                                "\n" + textUtils.serverName + "\n" +
+                                        "§aOnline: §5" + online + "§7/§5" + max + "\n",
+                                "\n§7Website: §5" + textUtils.website + "\n");
+
+                        PlayerData playerData = playerDataManager.getPlayerData(player.getUniqueId());
+                        ScoreboardHelper scoreboardHelper = ScoreboardHelper.getScoreboard(player);
+
+                        // Sidebar Scoreboard
+                        scoreboardHelper.setSlot(4, "§6| §7Coins: §5" + playerBankManager.getServerCoins(player.getUniqueId()) + textUtils.coinsSymbol);
+                        scoreboardHelper.setSlot(3, "§a| §7Rank: " + rankManager.rankName(playerData.getRank()));
+                    }
+                }
+            }
+        }.runTaskTimer(this,  0, 20*3);
     }
 
     public MySQLConnection getMySQL() {

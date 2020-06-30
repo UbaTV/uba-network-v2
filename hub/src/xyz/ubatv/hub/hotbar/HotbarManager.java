@@ -86,7 +86,7 @@ public class HotbarManager implements Listener {
             }
         }else{
             for(Player target : Bukkit.getOnlinePlayers()){
-                player.hidePlayer(main, target);
+                player.showPlayer(main, target);
             }
         }
     }

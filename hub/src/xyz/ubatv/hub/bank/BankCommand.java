@@ -43,7 +43,7 @@ public class BankCommand implements CommandExecutor {
         }else{
             player.sendMessage("   §8§l> §5§l" + target.getName() + " §7Bank");
         }
-        player.sendMessage(" §5Server §7Coins§8: §5§l" + serverCoins);
+        player.sendMessage(" §5Network §7Coins§8: §5§l" + serverCoins);
         player.sendMessage(" §5PvE §7Coins§8: §5§l" + pveCoins);
     }
 }

@@ -32,7 +32,7 @@ public class DeathEvent implements Listener {
         Player player = event.getPlayer();
 
         player.setGameMode(GameMode.SPECTATOR);
-        
+
         player.teleport(main.gameManager.game);
     }
 
