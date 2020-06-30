@@ -6,6 +6,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.ubatv.pve.bank.BankTable;
 import xyz.ubatv.pve.bank.PlayerBankManager;
+import xyz.ubatv.pve.events.DeathEvent;
 import xyz.ubatv.pve.events.EntityDamage;
 import xyz.ubatv.pve.events.JoinQuitEvent;
 import xyz.ubatv.pve.game.GameManager;
@@ -40,8 +41,10 @@ public class Main extends JavaPlugin {
     public LocationManager locationManager;
     public GameManager gameManager;
     public PlayerHandler playerHandler;
+    public MobSpawning mobSpawning;
 
     // TODO Scoreboard
+    // TODO Map Reset
 
     @Override
     public void onEnable() {
@@ -80,6 +83,7 @@ public class Main extends JavaPlugin {
         pluginManager.registerEvents(new JoinQuitEvent(), this);
         pluginManager.registerEvents(new MobSpawning(), this);
         pluginManager.registerEvents(new EntityDamage(), this);
+        pluginManager.registerEvents(new DeathEvent(), this);
     }
 
     private void preload(){
@@ -104,6 +108,7 @@ public class Main extends JavaPlugin {
         locationManager = new LocationManager();
         gameManager = new GameManager();
         playerHandler = new PlayerHandler();
+        mobSpawning = new MobSpawning();
     }
 
     private void bungeeCommunication(){

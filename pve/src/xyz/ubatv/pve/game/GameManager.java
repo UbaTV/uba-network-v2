@@ -20,12 +20,13 @@ public class GameManager {
     public final int minPlayer = 2;
     public final int maxPlayer = 4;
     public final int totalRounds = 5;
-    public final int timeDay = 60*5; // 5 minutes
+    public final int timeDay = 60*1; // 5 minutes
     public final long dayTicks = 6000;
     public final long nightTicks = 18000;
 
     public Location lobby = null;
     public Location game = null;
+    public ArrayList<Location> mobSpawn = new ArrayList<>();
 
     public GameStatus gameStatus = GameStatus.WAITING;
     public int currentRound = 0;
@@ -37,8 +38,19 @@ public class GameManager {
     public ArrayList<UUID> spectating = new ArrayList<>();
 
     public void preloadGame(){
+        // Define required locations
         main.gameManager.lobby = main.locationManager.getLocation("lobby");
         main.gameManager.game = main.locationManager.getLocation("game");
+        for(String name : main.locationYML.getConfig().getConfigurationSection("").getKeys(false)){
+            if(name.length() >= 8){
+                if(name.substring(0, 8).equalsIgnoreCase("mobspawn")){
+                    Location loc = main.locationManager.getLocation(name);
+                    main.gameManager.mobSpawn.add(loc);
+                }
+            }
+        }
+
+        // World settings
         for (Entity entity : main.gameManager.world.getEntities()) {
             if (!(entity instanceof Player) && entity instanceof LivingEntity) {
                 entity.remove();
@@ -78,18 +90,18 @@ public class GameManager {
     public void startGame(){
         changeGameState(GameStatus.ROUND_DAY);
         main.gameManager.currentRound = 1;
-        for(int i = 0; i <= main.gameManager.waiting.size(); i++){
+        for(int i = 0; i < main.gameManager.waiting.size(); i++){
             UUID uuid = main.gameManager.waiting.get(i);
             Player player = Bukkit.getPlayer(uuid);
             assert player != null;
             player.setGameMode(GameMode.SURVIVAL);
             player.getInventory().clear();
-            player.sendTitle("", "§5Day §7Time", 10, 20, 10);
+            player.sendTitle("", "§5Day §7Time", 10, 20*2, 10);
             TextUtils.sendActionBarMessage(player, "§7Gather resources to §5§nfight §7at night.");
             main.gameManager.alive.add(uuid);
-            main.gameManager.waiting.remove(uuid);
             player.teleport(game);
         }
+        main.gameManager.waiting.clear();
 
         for(UUID uuid : spectating) {
             Player player = Bukkit.getPlayer(uuid);
@@ -121,6 +133,7 @@ public class GameManager {
                                     sendDayNightTitle(false);
                                     main.gameManager.world.setTime(nightTicks);
                                     dayTime = timeDay;
+                                    main.mobSpawning.startMobSpawn();
                                 }else{
                                     if(dayTime == 60 || dayTime == 30 || dayTime == 10 || dayTime <= 5){
                                         Bukkit.broadcastMessage("§5§l" + dayTime + " §7seconds until night time");
