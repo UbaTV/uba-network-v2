@@ -1,9 +1,6 @@
 package xyz.ubatv.pve.game;
 
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -23,7 +20,9 @@ public class GameManager {
     public final int minPlayer = 2;
     public final int maxPlayer = 4;
     public final int totalRounds = 5;
-    public final int timeDay = 60*1; // 5 minutes
+    public final int timeDay = 60*5; // 5 minutes
+    public final long dayTicks = 6000;
+    public final long nightTicks = 18000;
 
     public Location lobby = null;
     public Location game = null;
@@ -45,10 +44,13 @@ public class GameManager {
                 entity.remove();
             }
         }
+        main.gameManager.world = main.gameManager.lobby.getWorld();
+        world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
     }
 
     public void startLobby(){
         changeGameState(GameStatus.WAITING);
+        main.gameManager.world.setTime(dayTicks);
 
         new BukkitRunnable() {
             int countdown = 5;
@@ -117,6 +119,7 @@ public class GameManager {
                                     changeGameState(GameStatus.ROUND_NIGHT);
                                     main.gameManager.mobsToKill = MobSpawning.mobsAtRound(currentRound);
                                     sendDayNightTitle(false);
+                                    main.gameManager.world.setTime(nightTicks);
                                     dayTime = timeDay;
                                 }else{
                                     if(dayTime == 60 || dayTime == 30 || dayTime == 10 || dayTime <= 5){
@@ -127,6 +130,7 @@ public class GameManager {
                                 // NIGHT TIME
                             }else{
                                 if(main.gameManager.mobsToKill <= 0){
+                                    main.gameManager.world.setTime(dayTicks);
                                     if(main.gameManager.currentRound == totalRounds){
                                         this.cancel();
                                         endGame(true);
@@ -204,7 +208,7 @@ public class GameManager {
     public void changeGameState(GameStatus gameState){
         if(gameStatus != gameState){
             main.gameManager.gameStatus = gameState;
-            // TODO Send game state change to bungee server
+            // TODO Send game state change to hub server
         }
     }
 

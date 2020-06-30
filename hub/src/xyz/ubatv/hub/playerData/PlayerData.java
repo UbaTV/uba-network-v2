@@ -12,11 +12,13 @@ public class PlayerData {
     UUID uuid;
     public Ranks rank;
     public int timeOnline;
+    public boolean playersHidden;
 
-    public PlayerData(UUID uuid, Ranks rank, int timeOnline){
+    public PlayerData(UUID uuid, Ranks rank, int timeOnline, boolean playersHidden){
         this.uuid = uuid;
         this.rank = rank;
         this.timeOnline = timeOnline;
+        this.playersHidden = playersHidden;
     }
 
     public UUID getUUID() {
@@ -47,8 +49,21 @@ public class PlayerData {
         this.timeOnline += timeOnline;
     }
 
+    public boolean isPlayersHidden() {
+        return playersHidden;
+    }
+
+    public void setPlayersHidden(boolean playersHidden) {
+        this.playersHidden = playersHidden;
+    }
+
+    public void togglePlayersHidden(){
+        this.playersHidden = !this.playersHidden;
+    }
+
     public void update(){
         main.playerDataManager.setRank(uuid, this.rank);
         // TODO Set time online
+        main.playerDataManager.setPlayersHidden(uuid, this.playersHidden);
     }
 }

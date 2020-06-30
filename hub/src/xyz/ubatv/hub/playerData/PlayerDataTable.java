@@ -27,7 +27,7 @@ public class PlayerDataTable {
         try{
             ResultSet result = main.getMySQL().querySQL("SELECT * FROM userData WHERE uuid='" + uuid.toString() + "';");
             if(!result.next())
-                main.getMySQL().updateSQL("INSERT INTO userData (`uuid`,`rank`,`onlineTime`) VALUES ('" + uuid.toString() + "','0','0')");
+                main.getMySQL().updateSQL("INSERT INTO userData (`uuid`,`rank`,`onlineTime`,`hidePlayers`) VALUES ('" + uuid.toString() + "','0','0','0')");
         }catch (SQLException | ClassNotFoundException e){
             e.printStackTrace();
         }
@@ -53,6 +53,29 @@ public class PlayerDataTable {
         int rankId = main.rankManager.rankToId(rank);
         try{
             main.mySQL.updateSQL("UPDATE userData SET rank='" + rankId + "' WHERE uuid='" + uuid.toString() + "';");
+        }catch (SQLException | ClassNotFoundException e){
+            e.printStackTrace();
+        }
+    }
+
+    public boolean getPlayersHidden(UUID uuid){
+        if(!this.playerExists(uuid)){
+            return false;
+        }
+
+        try {
+            ResultSet result = main.getMySQL().querySQL("SELECT * FROM userData WHERE uuid='" + uuid.toString() + "';");
+            result.next();
+            return result.getBoolean("hidePlayers");
+        }catch (SQLException | ClassNotFoundException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public void setPlayersHidden(UUID uuid, boolean hiddenPlayers){
+        try{
+            main.mySQL.updateSQL("UPDATE userData SET hidePlayers='" + hiddenPlayers + "' WHERE uuid='" + uuid.toString() + "';");
         }catch (SQLException | ClassNotFoundException e){
             e.printStackTrace();
         }

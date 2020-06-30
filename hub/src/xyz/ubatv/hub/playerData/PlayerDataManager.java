@@ -31,7 +31,8 @@ public class PlayerDataManager implements Listener {
     public void createPlayerData(UUID uuid){
         PlayerData data = new PlayerData(uuid,
                 getRank(uuid),
-                0); // TODO time online
+                0,
+                getPlayersHidden(uuid)); // TODO time online
         main.playerDataManager.playerData.put(uuid, data);
     }
 
@@ -45,6 +46,19 @@ public class PlayerDataManager implements Listener {
             getPlayerData(uuid).setRank(rank);
         } else{
             main.playerDataTable.setRank(uuid, rank);
+        }
+    }
+
+    public boolean getPlayersHidden(UUID uuid){
+        if(playerDataExists(uuid)) return getPlayerData(uuid).isPlayersHidden();
+        else return main.playerDataTable.getPlayersHidden(uuid);
+    }
+
+    public void setPlayersHidden(UUID uuid, boolean hidden){
+        if(playerDataExists(uuid)){
+            getPlayerData(uuid).setPlayersHidden(hidden);
+        } else{
+            main.playerDataTable.setPlayersHidden(uuid, hidden);
         }
     }
 
