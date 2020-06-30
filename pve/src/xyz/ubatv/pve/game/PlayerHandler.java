@@ -1,5 +1,7 @@
 package xyz.ubatv.pve.game;
 
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -27,6 +29,11 @@ public class PlayerHandler {
     }
 
     public void connectToHub(UUID uuid){
-        // TODO Send players to HUB server
+        Player player = Bukkit.getPlayer(uuid);
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        out.writeUTF("Connect");
+        out.writeUTF("hub");
+        assert player != null;
+        player.sendPluginMessage(main, "BungeeCord", out.toByteArray());
     }
 }

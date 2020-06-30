@@ -1,9 +1,7 @@
 package xyz.ubatv.pve.game;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Monster;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -14,12 +12,13 @@ public class MobSpawning implements Listener {
 
     private Main main = Main.getInstance();
 
+    // TODO Mob spawning
+
     @EventHandler
     public void onMobKill(EntityDeathEvent event){
         if(event.getEntity() instanceof Monster){
             Monster entity = (Monster) event.getEntity();
             if(entity.getKiller() != null){
-                Player player = entity.getKiller();
                 if(main.gameManager.gameStatus.equals(GameStatus.ROUND_NIGHT)){
                     main.gameManager.mobsToKill--;
                     Bukkit.broadcastMessage(main.gameManager.mobsToKill + "");
@@ -38,7 +37,6 @@ public class MobSpawning implements Listener {
     }
 
     public static int mobsAtRound(int round){
-        return 10; // For testing
-        //return round ^ 2 * 50;
+        return round ^ 2 * 50;
     }
 }

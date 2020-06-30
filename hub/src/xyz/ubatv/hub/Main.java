@@ -7,6 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import xyz.ubatv.hub.bank.BankCommand;
 import xyz.ubatv.hub.bank.BankTable;
 import xyz.ubatv.hub.bank.PlayerBankManager;
+import xyz.ubatv.hub.events.JoinQuitEvent;
 import xyz.ubatv.hub.hotbar.HotbarManager;
 import xyz.ubatv.hub.hotbar.SelectorGUI;
 import xyz.ubatv.hub.mysql.MySQLConnection;
@@ -59,6 +60,7 @@ public class Main extends JavaPlugin {
 
     private void registerEvents(){
         PluginManager pluginManager = Bukkit.getServer().getPluginManager();
+        pluginManager.registerEvents(new JoinQuitEvent(), this);
         pluginManager.registerEvents(new PlayerDataManager(), this);
         pluginManager.registerEvents(new PlayerBankManager(), this);
         pluginManager.registerEvents(new ChatFormatter(), this);

@@ -41,6 +41,8 @@ public class Main extends JavaPlugin {
     public GameManager gameManager;
     public PlayerHandler playerHandler;
 
+    // TODO Scoreboard
+
     @Override
     public void onEnable() {
         setInstance(this);
@@ -49,6 +51,8 @@ public class Main extends JavaPlugin {
         registerEvents();
 
         preload();
+        bungeeCommunication();
+
         gameManager.preloadGame();
         gameManager.startLobby();
     }
@@ -100,6 +104,10 @@ public class Main extends JavaPlugin {
         locationManager = new LocationManager();
         gameManager = new GameManager();
         playerHandler = new PlayerHandler();
+    }
+
+    private void bungeeCommunication(){
+        Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
     }
 
     public MySQLConnection getMySQL() {
