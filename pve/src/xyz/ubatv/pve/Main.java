@@ -9,6 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import xyz.ubatv.pve.bank.BankTable;
 import xyz.ubatv.pve.bank.PlayerBankManager;
+import xyz.ubatv.pve.commands.SelfRevive;
 import xyz.ubatv.pve.events.DeathEvent;
 import xyz.ubatv.pve.events.EntityDamage;
 import xyz.ubatv.pve.events.JoinQuitEvent;
@@ -85,6 +86,7 @@ public class Main extends JavaPlugin {
 
     private void registerCommands(){
         getCommand("setlocation").setExecutor(new SetLocationCommand());
+        getCommand("selfrevive").setExecutor(new SelfRevive());
     }
 
     private void registerEvents(){

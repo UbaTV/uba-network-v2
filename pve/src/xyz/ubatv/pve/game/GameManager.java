@@ -53,11 +53,7 @@ public class GameManager {
         }
 
         // World settings
-        for (Entity entity : main.gameManager.world.getEntities()) {
-            if (!(entity instanceof Player) && entity instanceof LivingEntity) {
-                entity.remove();
-            }
-        }
+        clearMobs();
         main.gameManager.world = main.gameManager.lobby.getWorld();
         world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
     }
@@ -156,6 +152,7 @@ public class GameManager {
                                         ScoreboardManager.dayTime = timeDay;
                                         Bukkit.broadcastMessage("    §7Round §5§l" + main.gameManager.currentRound);
                                         sendDayNightTitle(true);
+                                        clearMobs();
                                     }
                                 }
                             }
@@ -164,6 +161,14 @@ public class GameManager {
                 }.runTaskTimer(main, 0, 20);
             }
         }.runTaskLater(main, 20);
+    }
+
+    public void clearMobs(){
+        for (Entity entity : main.gameManager.world.getEntities()) {
+            if (!(entity instanceof Player) && entity instanceof LivingEntity) {
+                entity.remove();
+            }
+        }
     }
 
     public void endGame(boolean victory){

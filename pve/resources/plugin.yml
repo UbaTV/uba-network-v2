@@ -11,3 +11,9 @@ prefix: PVE
 commands:
   setlocation:
     description: This command is just a development tool.
+  selfrevive:
+    description: This command was developed by andreubita.
+    aliases:
+      - sr
+      - srevive
+      - selfr
