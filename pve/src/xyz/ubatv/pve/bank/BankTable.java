@@ -55,4 +55,13 @@ public class BankTable {
             e.printStackTrace();
         }
     }
+
+    public void addPvECoins(UUID uuid, int coins){
+        int total = getPvECoins(uuid) + coins;
+        try{
+            main.mySQL.updateSQL("UPDATE bank SET pve='" + total + "' WHERE uuid='" + uuid.toString() + "';");
+        }catch (SQLException | ClassNotFoundException e){
+            e.printStackTrace();
+        }
+    }
 }

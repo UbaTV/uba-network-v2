@@ -45,6 +45,14 @@ public class PlayerBankManager implements Listener {
         }
     }
 
+    public void addPvECoins(UUID uuid, int coins){
+        if(playerBankExists(uuid)){
+            getPlayerBank(uuid).addPveCoins(coins);
+        } else{
+            main.bankTable.addPvECoins(uuid, coins);
+        }
+    }
+
     public int getGameCoins(UUID uuid){
         if(playerBankExists(uuid)) return getPlayerBank(uuid).getGameCoins();
         else return 0;
@@ -54,6 +62,11 @@ public class PlayerBankManager implements Listener {
         if(playerBankExists(uuid)){
             getPlayerBank(uuid).setGameCoins(coins);
         }
+    }
+
+    public void addGameCoins(UUID uuid, int coins){
+        int total = getGameCoins(uuid) + coins;
+        setGameCoins(uuid, total);
     }
 
     @EventHandler

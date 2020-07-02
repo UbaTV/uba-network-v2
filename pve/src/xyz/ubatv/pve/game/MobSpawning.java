@@ -4,12 +4,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Monster;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import xyz.ubatv.pve.Main;
+import xyz.ubatv.pve.playerData.PlayerData;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -25,7 +27,10 @@ public class MobSpawning implements Listener {
             if(entity.getKiller() != null){
                 if(main.gameManager.gameStatus.equals(GameStatus.ROUND_NIGHT)){
                     main.gameManager.mobsToKill--;
-                    Bukkit.broadcastMessage(main.gameManager.mobsToKill + ""); // TODO remove
+                    Player player = entity.getKiller();
+                    PlayerData playerData = main.playerDataManager.getPlayerData(player.getUniqueId());
+                    playerData.incrementMobsKilled();
+                    main.playerBankManager.addGameCoins(player.getUniqueId(), getKillReward(entity.getType()));
                 }
             }
         }
@@ -105,5 +110,15 @@ public class MobSpawning implements Listener {
         else if (round == 4) return 300;
         else if (round == 5) return 500;
         else return 25;
+    }
+
+    public int getKillReward(EntityType entityType){
+        if(entityType.equals(EntityType.ZOMBIE)
+                || entityType.equals(EntityType.SKELETON)) return 5;
+        else if(entityType.equals(EntityType.CREEPER)) return 10;
+        else if(entityType.equals(EntityType.WITCH)) return 15;
+        else if(entityType.equals(EntityType.BLAZE)) return 25;
+        else if(entityType.equals(EntityType.WITHER_SKELETON)) return 50;
+        else return 10;
     }
 }

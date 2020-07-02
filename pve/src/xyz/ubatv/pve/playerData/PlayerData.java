@@ -13,6 +13,7 @@ public class PlayerData {
 
     UUID uuid;
     public Ranks rank;
+    public int mobsKilled;
     public int timeOnline;
     public int selfRevives;
     public int teamRevives;
@@ -36,6 +37,7 @@ public class PlayerData {
         this.hasteBoost = hasteBoost;
         this.regenBoost = regenBoost;
         this.damageBoost = damageBoost;
+        this.mobsKilled = 0;
     }
 
     public void update(){
@@ -131,5 +133,17 @@ public class PlayerData {
 
     public void setDamageBoost(int damageBoost) {
         this.damageBoost = damageBoost;
+    }
+
+    public int getMobsKilled() {
+        return mobsKilled;
+    }
+
+    public void setMobsKilled(int mobsKilled) {
+        this.mobsKilled = mobsKilled;
+    }
+
+    public void incrementMobsKilled() {
+        this.mobsKilled++;
     }
 }

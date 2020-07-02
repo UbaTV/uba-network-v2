@@ -30,12 +30,20 @@ public class PlayerBank {
         this.pveCoins = pveCoins;
     }
 
+    public void addPveCoins(int pveCoins) {
+        this.pveCoins += pveCoins;
+    }
+
     public int getGameCoins() {
         return gameCoins;
     }
 
     public void setGameCoins(int gameCoins) {
         this.gameCoins = gameCoins;
+    }
+
+    public void addGameCoins(int gameCoins) {
+        this.gameCoins += gameCoins;
     }
 
     public void update(){

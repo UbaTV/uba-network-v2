@@ -6,6 +6,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import xyz.ubatv.pve.Main;
+import xyz.ubatv.pve.playerData.PlayerData;
 import xyz.ubatv.pve.scoreboard.ScoreboardManager;
 import xyz.ubatv.pve.utils.TextUtils;
 
@@ -172,6 +173,10 @@ public class GameManager {
         for(Player player : Bukkit.getOnlinePlayers()){
             player.setGameMode(GameMode.SPECTATOR);
             player.teleport(main.gameManager.game);
+            PlayerData playerData = main.playerDataManager.getPlayerData(player.getUniqueId());
+            int pveCoinsReward = main.gameManager.currentRound * 20 + ((int) (playerData.getMobsKilled() * 0.9));
+            player.sendMessage(main.textUtils.right + "You won §5" + pveCoinsReward + " PvE§7 coins.");
+            main.playerBankManager.addPvECoins(player.getUniqueId(), pveCoinsReward);
         }
 
         new BukkitRunnable(){
