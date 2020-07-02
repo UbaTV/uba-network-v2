@@ -21,8 +21,8 @@ public class EconCommand implements CommandExecutor {
         if(sender instanceof Player){
             Player player = (Player) sender;
             UUID uuid = player.getUniqueId();
-            if(main.playerDataManager.hasPermission(uuid, Ranks.ADMIN)){
-                if(args.length == 2){
+            if(main.playerDataManager.hasPermission(uuid, Ranks.CEO)){
+                if(args.length == 3){
                     if(args[0].equalsIgnoreCase("reset")){
                         Player target = Bukkit.getPlayer(args[1]);
                         if(target == null){
@@ -33,11 +33,11 @@ public class EconCommand implements CommandExecutor {
                     }
                 }
 
-                if(args.length == 3){
+                if(args.length == 4){
                     return false;
                 }
 
-                player.sendMessage(main.textUtils.error + "/econ <add/remove/reset> <player> [amount]");
+                player.sendMessage(main.textUtils.error + "/econ <add/remove/reset> <player> <bankAccount> [amount]");
             }else{
                 player.sendMessage(main.textUtils.noPerms);
             }

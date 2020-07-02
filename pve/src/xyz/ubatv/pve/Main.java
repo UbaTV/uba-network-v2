@@ -4,12 +4,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import xyz.ubatv.pve.bank.BankTable;
 import xyz.ubatv.pve.bank.PlayerBankManager;
 import xyz.ubatv.pve.events.DeathEvent;
 import xyz.ubatv.pve.events.EntityDamage;
 import xyz.ubatv.pve.events.JoinQuitEvent;
 import xyz.ubatv.pve.game.GameManager;
+import xyz.ubatv.pve.game.GameStatus;
 import xyz.ubatv.pve.game.MobSpawning;
 import xyz.ubatv.pve.game.PlayerHandler;
 import xyz.ubatv.pve.location.LocationManager;
@@ -17,11 +19,14 @@ import xyz.ubatv.pve.location.LocationYML;
 import xyz.ubatv.pve.location.SetLocationCommand;
 import xyz.ubatv.pve.mysql.MySQLConnection;
 import xyz.ubatv.pve.mysql.MySQLYML;
+import xyz.ubatv.pve.playerData.PlayerData;
 import xyz.ubatv.pve.playerData.PlayerDataManager;
 import xyz.ubatv.pve.playerData.PlayerDataTable;
 import xyz.ubatv.pve.playerData.PvETable;
 import xyz.ubatv.pve.rankSystem.ChatFormatter;
 import xyz.ubatv.pve.rankSystem.RankManager;
+import xyz.ubatv.pve.scoreboard.ScoreboardHelper;
+import xyz.ubatv.pve.scoreboard.ScoreboardManager;
 import xyz.ubatv.pve.utils.TextUtils;
 
 public class Main extends JavaPlugin {
@@ -58,6 +63,8 @@ public class Main extends JavaPlugin {
 
         gameManager.preloadGame();
         gameManager.startLobby();
+
+        updateScoreboards();
     }
 
     @Override
@@ -86,6 +93,7 @@ public class Main extends JavaPlugin {
         pluginManager.registerEvents(new MobSpawning(), this);
         pluginManager.registerEvents(new EntityDamage(), this);
         pluginManager.registerEvents(new DeathEvent(), this);
+        pluginManager.registerEvents(new ScoreboardManager(), this);
     }
 
     private void preload(){
@@ -111,6 +119,40 @@ public class Main extends JavaPlugin {
         gameManager = new GameManager();
         playerHandler = new PlayerHandler();
         mobSpawning = new MobSpawning();
+    }
+
+    private void updateScoreboards(){
+        new BukkitRunnable(){
+            @Override
+            public void run() {
+                String gameState;
+                if(gameManager.gameStatus.equals(GameStatus.WAITING)) gameState = "§eWaiting for players";
+                else if(gameManager.gameStatus.equals(GameStatus.STARTING)) gameState = "§aStarting";
+                else if(gameManager.gameStatus.equals(GameStatus.ENDED)
+                        || gameManager.gameStatus.equals(GameStatus.RESTARTING)) gameState = "§cEnded";
+                else if(gameManager.gameStatus.equals(GameStatus.ROUND_NIGHT)) gameState = "§7Mobs Left§8: §5§l" + gameManager.mobsToKill;
+                else if(gameManager.gameStatus.equals(GameStatus.ROUND_DAY)) gameState = "§7Day Time Left§l: §5§l" + ScoreboardManager.dayTime / 60 + "§5min§5§l" + ScoreboardManager.dayTime % 60 + "§5s";
+                else gameState = "This is a bug. Report to staff";
+
+                for(Player player : Bukkit.getOnlinePlayers()){
+                    if(ScoreboardHelper.hasScoreboard(player)){
+                        // Tab Header and Footer
+                        int online = Bukkit.getServer().getOnlinePlayers().size();
+                        int max = Bukkit.getServer().getMaxPlayers();
+                        player.setPlayerListHeaderFooter(
+                                "\n" + textUtils.serverName + "\n" +
+                                        "§aOnline: §5" + online + "§7/§5" + max + "\n",
+                                "\n§7Website: §5" + textUtils.website + "\n");
+
+                        ScoreboardHelper scoreboardHelper = ScoreboardHelper.getScoreboard(player);
+
+                        // Sidebar Scoreboard
+                        scoreboardHelper.setSlot(4, gameState);
+                        scoreboardHelper.setSlot(3, "§7Coins: " + playerBankManager.playerBank.get(player.getUniqueId()).getGameCoins());
+                    }
+                }
+            }
+        }.runTaskTimer(this,  0, 20*3);
     }
 
     private void bungeeCommunication(){

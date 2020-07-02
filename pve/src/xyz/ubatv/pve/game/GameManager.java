@@ -6,6 +6,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import xyz.ubatv.pve.Main;
+import xyz.ubatv.pve.scoreboard.ScoreboardManager;
 import xyz.ubatv.pve.utils.TextUtils;
 
 import java.util.ArrayList;
@@ -135,6 +136,7 @@ public class GameManager {
                                     dayTime = timeDay;
                                     main.mobSpawning.startMobSpawn();
                                 }else{
+                                    ScoreboardManager.dayTime = dayTime;
                                     if(dayTime == 60 || dayTime == 30 || dayTime == 10 || dayTime <= 5){
                                         Bukkit.broadcastMessage("§5§l" + dayTime + " §7seconds until night time");
                                     }
