@@ -1,6 +1,7 @@
 package xyz.ubatv.pve;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
@@ -136,13 +137,17 @@ public class Main extends JavaPlugin {
             @Override
             public void run() {
                 String gameState;
+                int minLeft = ScoreboardManager.dayTime / 60;
+                int secLeft = ScoreboardManager.dayTime % 60;
                 if(gameManager.gameStatus.equals(GameStatus.WAITING)) gameState = "§eWaiting for players";
                 else if(gameManager.gameStatus.equals(GameStatus.STARTING)) gameState = "§aStarting";
                 else if(gameManager.gameStatus.equals(GameStatus.ENDED)
                         || gameManager.gameStatus.equals(GameStatus.RESTARTING)) gameState = "§cEnded";
-                else if(gameManager.gameStatus.equals(GameStatus.ROUND_NIGHT)) gameState = "§7Mobs Left§8: §5§l" + gameManager.mobsToKill;
-                else if(gameManager.gameStatus.equals(GameStatus.ROUND_DAY)) gameState = "§7Time Left§l: §5" + ScoreboardManager.dayTime / 60 + "m" + ScoreboardManager.dayTime % 60 + "s";
+                else if(gameManager.gameStatus.equals(GameStatus.ROUND_NIGHT)) gameState = "§7Mobs Left§8: " + gameManager.mobsToKill;
+                else if(gameManager.gameStatus.equals(GameStatus.ROUND_DAY)) gameState = "§7Time Left§8: " + minLeft + "m" + secLeft + "s";
                 else gameState = "This is a bug. Report to staff";
+
+                Bukkit.broadcastMessage("" + ScoreboardManager.dayTime);
 
                 for(Player player : Bukkit.getOnlinePlayers()){
                     if(ScoreboardHelper.hasScoreboard(player)){

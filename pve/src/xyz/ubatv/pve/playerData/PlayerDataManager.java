@@ -154,12 +154,22 @@ public class PlayerDataManager implements Listener {
         String rankName = main.rankManager.rankName(getRank(player.getUniqueId()));
     }
 
+    public void updateListName(Player player){
+        Ranks rank = getRank(player.getUniqueId());
+        if(rank.equals(Ranks.DEFAULT)){
+            player.setPlayerListName("§7" + player.getName());
+        }else{
+            player.setPlayerListName("§7[" + main.rankManager.rankName(rank) + "§7] §7" + player.getName());
+        }
+    }
+
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event){
         Player player = event.getPlayer();
         UUID uuid = player.getUniqueId();
         main.playerDataTable.createPlayer(player);
         createPlayerData(uuid);
+        updateTablistName(player);
     }
 
     @EventHandler

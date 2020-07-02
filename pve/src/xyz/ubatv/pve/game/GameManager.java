@@ -22,7 +22,7 @@ public class GameManager {
     public final int minPlayer = 2;
     public final int maxPlayer = 4;
     public final int totalRounds = 5;
-    public final int timeDay = 60*5; // 5 minutes
+    public final int timeDay = 60*1; // 5 minutes
     public final long dayTicks = 6000;
     public final long nightTicks = 18000;
 
@@ -174,9 +174,9 @@ public class GameManager {
             player.setGameMode(GameMode.SPECTATOR);
             player.teleport(main.gameManager.game);
             PlayerData playerData = main.playerDataManager.getPlayerData(player.getUniqueId());
-            int pveCoinsReward = main.gameManager.currentRound * 20 + ((int) (playerData.getMobsKilled() * 0.9));
+            int pveCoinsReward = (main.gameManager.currentRound - 1) * 20 + ((int) (playerData.getMobsKilled() * 0.9));
             player.sendMessage(main.textUtils.right + "You won §5" + pveCoinsReward + " PvE§7 coins.");
-            main.playerBankManager.addPvECoins(player.getUniqueId(), pveCoinsReward);
+            main.bankTable.addPvECoins(player.getUniqueId(), pveCoinsReward);
         }
 
         new BukkitRunnable(){
@@ -191,7 +191,13 @@ public class GameManager {
         for(Player player : Bukkit.getOnlinePlayers()){
             main.playerHandler.connectToHub(player.getUniqueId());
         }
-        Bukkit.shutdown();
+
+        new BukkitRunnable(){
+            @Override
+            public void run() {
+                Bukkit.shutdown();
+            }
+        }.runTaskLater(main, 20*3);
     }
 
     // day (true) night (false)
