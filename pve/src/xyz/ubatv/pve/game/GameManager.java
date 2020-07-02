@@ -21,7 +21,7 @@ public class GameManager {
     public final int minPlayer = 2;
     public final int maxPlayer = 4;
     public final int totalRounds = 5;
-    public final int timeDay = 60*1; // 5 minutes
+    public final int timeDay = 60*5; // 5 minutes
     public final long dayTicks = 6000;
     public final long nightTicks = 18000;
 
@@ -136,12 +136,12 @@ public class GameManager {
                                     dayTime = timeDay;
                                     main.mobSpawning.startMobSpawn();
                                 }else{
-                                    ScoreboardManager.dayTime = dayTime;
                                     if(dayTime == 60 || dayTime == 30 || dayTime == 10 || dayTime <= 5){
                                         Bukkit.broadcastMessage("§5§l" + dayTime + " §7seconds until night time");
                                     }
                                 }
                                 dayTime--;
+                                ScoreboardManager.dayTime--;
                                 // NIGHT TIME
                             }else{
                                 if(main.gameManager.mobsToKill <= 0){
@@ -152,6 +152,7 @@ public class GameManager {
                                     }else{
                                         changeGameState(GameStatus.ROUND_DAY);
                                         main.gameManager.currentRound++;
+                                        ScoreboardManager.dayTime = timeDay;
                                         Bukkit.broadcastMessage("    §7Round §5§l" + main.gameManager.currentRound);
                                         sendDayNightTitle(true);
                                     }

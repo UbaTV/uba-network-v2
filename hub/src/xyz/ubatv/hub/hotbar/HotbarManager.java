@@ -41,7 +41,7 @@ public class HotbarManager implements Listener {
         ItemStack gameSelector = gameSelector();
         ItemStack hidePlayers = hidePlayers(!main.playerDataManager.getPlayersHidden(uuid));
 
-        player.getInventory().setItem(5, serverInfo);
+        player.getInventory().setItem(0, serverInfo);
         player.getInventory().setItem(4, gameSelector);
         player.getInventory().setItem(8, hidePlayers);
 
@@ -59,7 +59,7 @@ public class HotbarManager implements Listener {
         if(event.getAction().equals(Action.LEFT_CLICK_AIR) || event.getAction().equals(Action.LEFT_CLICK_BLOCK)) return;
 
         if(event.getItem().getType() == serverInfo().getType()){
-            ServerInfo.sendServerInfo(event.getPlayer());
+            sendServerInfo(event.getPlayer());
             return;
         }
 
@@ -122,5 +122,15 @@ public class HotbarManager implements Listener {
         ItemStack vanish = main.itemAPI.item(Material.REDSTONE, "§7Visibility: §c§lOff", "§7Right-click to §nshow§r§7 all players");
         ItemStack show = main.itemAPI.item(Material.GLOWSTONE_DUST, "§7Visibility: §a§lOn", "§7Right-click to §nhide§r§7 all players");
         return hidden ? vanish : show;
+    }
+
+    public void sendServerInfo(Player player){
+        player.sendMessage(" ");
+        main.textUtils.sendCenteredMessage(player, main.textUtils.serverName);
+        player.sendMessage(" ");
+        player.sendMessage("   §7Website: §5https://ubatv.xyz");
+        player.sendMessage("   §7Discord: §5https://discord.gg/AJxFu2C");
+        player.sendMessage("   §7Twitter: §5https://twitter.com/ubatvoficial");
+        player.sendMessage(" ");
     }
 }

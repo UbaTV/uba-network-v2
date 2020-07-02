@@ -7,13 +7,12 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import xyz.ubatv.pve.Main;
 import xyz.ubatv.pve.game.GameStatus;
-import xyz.ubatv.pve.playerData.PlayerData;
 
 public class ScoreboardManager implements Listener {
 
     private Main main = Main.getInstance();
 
-    public static int dayTime = 0;
+    public static int dayTime = 60*5;
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event){
@@ -26,13 +25,13 @@ public class ScoreboardManager implements Listener {
         else if(main.gameManager.gameStatus.equals(GameStatus.ENDED)
         || main.gameManager.gameStatus.equals(GameStatus.RESTARTING)) gameState = "§cEnded";
         else if(main.gameManager.gameStatus.equals(GameStatus.ROUND_NIGHT)) gameState = "§7Mobs Left§8: §5§l" + main.gameManager.mobsToKill;
-        else if(main.gameManager.gameStatus.equals(GameStatus.ROUND_DAY)) gameState = "§7Day Time Left§l: §5§l" + dayTime / 60 + "§5min§5§l" + dayTime % 60 + "§5s";
+        else if(main.gameManager.gameStatus.equals(GameStatus.ROUND_DAY)) gameState = "§7Time Left§l: §5" + dayTime / 60 + "m" + dayTime % 60 + "s";
         else gameState = "This is a bug. Report to staff";
 
         scoreboardHelper.setTitle(main.textUtils.serverName);
         scoreboardHelper.setSlot(5, "  ");
         scoreboardHelper.setSlot(4, gameState);
-        scoreboardHelper.setSlot(3, "§7Coins: " + main.playerBankManager.playerBank.get(player.getUniqueId()).getGameCoins());
+        scoreboardHelper.setSlot(3, "§7Coins: §5" + main.playerBankManager.playerBank.get(player.getUniqueId()).getGameCoins());
         scoreboardHelper.setSlot(2, " ");
         scoreboardHelper.setSlot(1, "§7" + main.textUtils.serverIp);
     }

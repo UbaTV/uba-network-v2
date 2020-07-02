@@ -30,10 +30,8 @@ public class DeathEvent implements Listener {
     @EventHandler
     public void onRespawn(PlayerRespawnEvent event){
         Player player = event.getPlayer();
-
         player.setGameMode(GameMode.SPECTATOR);
-
-        player.teleport(main.gameManager.game);
+        event.setRespawnLocation(main.gameManager.game);
     }
 
     @EventHandler

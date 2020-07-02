@@ -1,6 +1,7 @@
 package xyz.ubatv.pve;
 
 import org.bukkit.Bukkit;
+import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -10,10 +11,7 @@ import xyz.ubatv.pve.bank.PlayerBankManager;
 import xyz.ubatv.pve.events.DeathEvent;
 import xyz.ubatv.pve.events.EntityDamage;
 import xyz.ubatv.pve.events.JoinQuitEvent;
-import xyz.ubatv.pve.game.GameManager;
-import xyz.ubatv.pve.game.GameStatus;
-import xyz.ubatv.pve.game.MobSpawning;
-import xyz.ubatv.pve.game.PlayerHandler;
+import xyz.ubatv.pve.game.*;
 import xyz.ubatv.pve.location.LocationManager;
 import xyz.ubatv.pve.location.LocationYML;
 import xyz.ubatv.pve.location.SetLocationCommand;
@@ -27,6 +25,9 @@ import xyz.ubatv.pve.rankSystem.RankManager;
 import xyz.ubatv.pve.scoreboard.ScoreboardHelper;
 import xyz.ubatv.pve.scoreboard.ScoreboardManager;
 import xyz.ubatv.pve.utils.TextUtils;
+
+import java.io.File;
+import java.util.Objects;
 
 public class Main extends JavaPlugin {
 
@@ -46,8 +47,8 @@ public class Main extends JavaPlugin {
     public GameManager gameManager;
     public PlayerHandler playerHandler;
     public MobSpawning mobSpawning;
+    public WorldReset worldReset;
 
-    // TODO Map Reset
     // TODO Buffers and Shop
 
     @Override
@@ -77,6 +78,7 @@ public class Main extends JavaPlugin {
                 playerHandler.connectToHub(player.getUniqueId());
             }
         }
+        Bukkit.getServer().unloadWorld(Objects.requireNonNull(Bukkit.getWorld("world")), false);
     }
 
     private void registerCommands(){
@@ -96,6 +98,15 @@ public class Main extends JavaPlugin {
     }
 
     private void preload(){
+
+        worldReset = new WorldReset();
+        File file = Bukkit.getWorld("world").getWorldFolder();
+        WorldReset.unloadWorld(Bukkit.getWorld("world"));
+        File template = new File("./template", ".");
+        WorldReset.deleteWorld(file);
+        WorldReset.copyFileStructure(template, file);
+        new WorldCreator("world").createWorld();
+
         textUtils = new TextUtils();
         mySQLYML = new MySQLYML();
         mySQLYML.loadConfig();
@@ -130,7 +141,7 @@ public class Main extends JavaPlugin {
                 else if(gameManager.gameStatus.equals(GameStatus.ENDED)
                         || gameManager.gameStatus.equals(GameStatus.RESTARTING)) gameState = "§cEnded";
                 else if(gameManager.gameStatus.equals(GameStatus.ROUND_NIGHT)) gameState = "§7Mobs Left§8: §5§l" + gameManager.mobsToKill;
-                else if(gameManager.gameStatus.equals(GameStatus.ROUND_DAY)) gameState = "§7Day Time Left§l: §5§l" + ScoreboardManager.dayTime / 60 + "§5min§5§l" + ScoreboardManager.dayTime % 60 + "§5s";
+                else if(gameManager.gameStatus.equals(GameStatus.ROUND_DAY)) gameState = "§7Time Left§l: §5" + ScoreboardManager.dayTime / 60 + "m" + ScoreboardManager.dayTime % 60 + "s";
                 else gameState = "This is a bug. Report to staff";
 
                 for(Player player : Bukkit.getOnlinePlayers()){
@@ -147,7 +158,7 @@ public class Main extends JavaPlugin {
 
                         // Sidebar Scoreboard
                         scoreboardHelper.setSlot(4, gameState);
-                        scoreboardHelper.setSlot(3, "§7Coins: " + playerBankManager.playerBank.get(player.getUniqueId()).getGameCoins());
+                        scoreboardHelper.setSlot(3, "§7Coins: §5" + playerBankManager.playerBank.get(player.getUniqueId()).getGameCoins());
                     }
                 }
             }
