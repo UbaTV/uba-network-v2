@@ -1,4 +1,4 @@
-package xyz.ubatv.hub.hotbar;
+package xyz.ubatv.hub.hotbar.gameSelector;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -12,13 +12,13 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import xyz.ubatv.hub.Main;
 
-public class SelectorGUI implements InventoryHolder, Listener {
+public class GameSelectorGUI implements InventoryHolder, Listener {
 
     private Main main = Main.getInstance();
 
     public final Inventory gameSelector;
 
-    public SelectorGUI(){
+    public GameSelectorGUI(){
         this.gameSelector = Bukkit.createInventory(this, 9*3, "§5§lGame §7Selector");
     }
 

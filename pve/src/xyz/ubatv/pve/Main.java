@@ -51,6 +51,7 @@ public class Main extends JavaPlugin {
     public WorldReset worldReset;
 
     // TODO Buffers and Shop
+    // TODO Self Revive and Team Revive
 
     @Override
     public void onEnable() {
@@ -146,8 +147,6 @@ public class Main extends JavaPlugin {
                 else if(gameManager.gameStatus.equals(GameStatus.ROUND_NIGHT)) gameState = "§7Mobs Left§8: " + gameManager.mobsToKill;
                 else if(gameManager.gameStatus.equals(GameStatus.ROUND_DAY)) gameState = "§7Time Left§8: " + minLeft + "m" + secLeft + "s";
                 else gameState = "This is a bug. Report to staff";
-
-                Bukkit.broadcastMessage("" + ScoreboardManager.dayTime);
 
                 for(Player player : Bukkit.getOnlinePlayers()){
                     if(ScoreboardHelper.hasScoreboard(player)){
