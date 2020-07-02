@@ -19,7 +19,6 @@ import xyz.ubatv.pve.location.LocationYML;
 import xyz.ubatv.pve.location.SetLocationCommand;
 import xyz.ubatv.pve.mysql.MySQLConnection;
 import xyz.ubatv.pve.mysql.MySQLYML;
-import xyz.ubatv.pve.playerData.PlayerData;
 import xyz.ubatv.pve.playerData.PlayerDataManager;
 import xyz.ubatv.pve.playerData.PlayerDataTable;
 import xyz.ubatv.pve.playerData.PvETable;
@@ -48,8 +47,8 @@ public class Main extends JavaPlugin {
     public PlayerHandler playerHandler;
     public MobSpawning mobSpawning;
 
-    // TODO Scoreboard
     // TODO Map Reset
+    // TODO Buffers and Shop
 
     @Override
     public void onEnable() {
