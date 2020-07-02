@@ -3,9 +3,12 @@ package xyz.ubatv.hub.hotbar;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -34,9 +37,12 @@ public class HotbarManager implements Listener {
         player.getInventory().clear();
         if(!main.playerDataManager.hasPermission(uuid, Ranks.ADMIN)) player.setGameMode(GameMode.ADVENTURE);
 
+        ItemStack serverInfo = serverInfo();
         ItemStack gameSelector = gameSelector();
-        player.getInventory().setItem(4, gameSelector);
         ItemStack hidePlayers = hidePlayers(!main.playerDataManager.getPlayersHidden(uuid));
+
+        player.getInventory().setItem(5, serverInfo);
+        player.getInventory().setItem(4, gameSelector);
         player.getInventory().setItem(8, hidePlayers);
 
         toggleVisibility(player);
@@ -50,10 +56,16 @@ public class HotbarManager implements Listener {
     @EventHandler
     public void onClick(PlayerInteractEvent event){
         if(event.getItem() == null) return;
+        if(event.getAction().equals(Action.LEFT_CLICK_AIR) || event.getAction().equals(Action.LEFT_CLICK_BLOCK)) return;
 
-        if(event.getItem().getType() == Material.COMPASS){
-            Player player = event.getPlayer();
-            selectorGUI.openInventory(player);
+        if(event.getItem().getType() == serverInfo().getType()){
+            ServerInfo.sendServerInfo(event.getPlayer());
+            return;
+        }
+
+        if(event.getItem().getType() == gameSelector().getType()){
+            selectorGUI.openInventory(event.getPlayer());
+            return;
         }
 
         if(event.getItem().getType() == Material.REDSTONE || event.getItem().getType() == Material.GLOWSTONE_DUST){
@@ -80,6 +92,12 @@ public class HotbarManager implements Listener {
     }
 
     @EventHandler
+    public void onInventoryClick(InventoryClickEvent event){
+        HumanEntity player = event.getWhoClicked();
+        if(event.getClickedInventory().equals(player.getInventory())) event.setCancelled(true);
+    }
+
+    @EventHandler
     public void onDrop(PlayerDropItemEvent event){
         ItemStack item = event.getItemDrop().getItemStack();
         if(item.getType() == Material.COMPASS) event.setCancelled(true);
@@ -90,6 +108,11 @@ public class HotbarManager implements Listener {
         Player player = event.getPlayer();
         hidden.remove(player);
     }
+
+    private ItemStack serverInfo() {
+        return main.itemAPI.item(Material.BOOK, "§5§lServer §7Info", "§7Right-click to show the server info.");
+    }
+
 
     public ItemStack gameSelector(){
         return main.itemAPI.item(Material.COMPASS, "§5§lGame §7Selector", "§7Right-click to open this menu.");
