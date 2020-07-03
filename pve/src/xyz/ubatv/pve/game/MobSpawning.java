@@ -69,19 +69,18 @@ public class MobSpawning implements Listener {
     public ArrayList<EntityType> mobsRound(int round){
         ArrayList<EntityType> mobs = new ArrayList<>();
         mobs.add(EntityType.ZOMBIE);
-        mobs.add(EntityType.SKELETON);
         if(round >= 2){
-            mobs.add(EntityType.CREEPER);
+            mobs.add(EntityType.SKELETON);
         }
         if(round >= 3){
-            mobs.add(EntityType.WITCH);
+            mobs.add(EntityType.CREEPER);
         }
         if(round >= 4){
-            mobs.add(EntityType.BLAZE);
+            mobs.add(EntityType.WITCH);
         }
 
         if(round >= 5){
-            mobs.add(EntityType.WITHER_SKELETON);
+            mobs.add(EntityType.BLAZE);
         }
 
         return mobs;
@@ -97,18 +96,18 @@ public class MobSpawning implements Listener {
 
     // return in seconds
     public int mobSpawnDelay(int round){
-        if (round == 2) return 3;
+        if (round == 2) return 4;
         else if (round == 3) return 3;
-        else if (round == 4) return 2;
+        else if (round == 4) return 3;
         else if (round == 5) return 2;
-        else return 4;
+        else return 5;
     }
 
     public static int mobsAtRound(int round){
-        if (round == 2) return 75;
-        else if (round == 3) return 150;
-        else if (round == 4) return 300;
-        else if (round == 5) return 500;
+        if (round == 2) return 50;
+        else if (round == 3) return 75;
+        else if (round == 4) return 100;
+        else if (round == 5) return 150;
         else return 25;
     }
 
