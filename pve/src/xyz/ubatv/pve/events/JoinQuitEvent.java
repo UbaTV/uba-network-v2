@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.server.ServerListPingEvent;
 import xyz.ubatv.pve.Main;
 import xyz.ubatv.pve.game.GameStatus;
 
@@ -47,5 +48,15 @@ public class JoinQuitEvent implements Listener {
         main.gameManager.waiting.remove(uuid);
         main.gameManager.dead.remove(uuid);
         main.gameManager.spectating.remove(uuid);
+    }
+
+    @EventHandler
+    public void changeMotd(ServerListPingEvent event){
+        event.setMaxPlayers(10);
+        if(main.gameManager.gameStatus.equals(GameStatus.WAITING)){
+            event.setMotd("WAITING");
+        }else{
+            event.setMotd("INGAME");
+        }
     }
 }

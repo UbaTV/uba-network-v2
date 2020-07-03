@@ -20,6 +20,9 @@ public class JoinQuitEvent implements Listener {
         Player player = event.getPlayer();
         UUID uuid = player.getUniqueId();
 
+        player.setHealth(20);
+        player.setFoodLevel(20);
+
         event.setJoinMessage("§8[§a§l+§8] §5" + player.getName());
 
         if(!main.playerDataManager.hasPermission(uuid, Ranks.ADMIN)) player.setGameMode(GameMode.ADVENTURE);

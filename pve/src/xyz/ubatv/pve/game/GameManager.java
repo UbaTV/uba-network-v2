@@ -19,7 +19,7 @@ public class GameManager {
 
     public World world = Bukkit.getServer().getWorld("world");
 
-    public final int minPlayer = 2;
+    public final int minPlayer = 1;
     public final int maxPlayer = 4;
     public final int totalRounds = 5;
     public final int timeDay = 60*1; // 5 minutes
@@ -239,8 +239,6 @@ public class GameManager {
     public void changeGameState(GameStatus gameState){
         if(gameStatus != gameState){
             main.gameManager.gameStatus = gameState;
-            // TODO Send game state change to hub server
         }
     }
-
 }

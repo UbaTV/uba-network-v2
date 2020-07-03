@@ -12,7 +12,8 @@ import xyz.ubatv.hub.events.HealthFoodManager;
 import xyz.ubatv.hub.events.JoinQuitEvent;
 import xyz.ubatv.hub.events.PlaceBreakBlock;
 import xyz.ubatv.hub.hotbar.HotbarManager;
-import xyz.ubatv.hub.hotbar.SelectorGUI;
+import xyz.ubatv.hub.hotbar.gameSelector.GameSelectorGUI;
+import xyz.ubatv.hub.hotbar.gameSelector.PingServer;
 import xyz.ubatv.hub.mysql.MySQLConnection;
 import xyz.ubatv.hub.mysql.MySQLYML;
 import xyz.ubatv.hub.playerData.PlayerData;
@@ -25,6 +26,8 @@ import xyz.ubatv.hub.scoreboard.ScoreboardHelper;
 import xyz.ubatv.hub.scoreboard.ScoreboardManager;
 import xyz.ubatv.hub.utils.ItemAPI;
 import xyz.ubatv.hub.utils.TextUtils;
+
+import java.net.ConnectException;
 
 public class Main extends JavaPlugin {
 
@@ -40,6 +43,8 @@ public class Main extends JavaPlugin {
     public PlayerBankManager playerBankManager;
     public BankTable bankTable;
 
+    PingServer pve1 = new PingServer("localhost", 25567);
+
     @Override
     public void onEnable() {
         setInstance(this);
@@ -52,6 +57,15 @@ public class Main extends JavaPlugin {
         for(Player online : Bukkit.getOnlinePlayers()){
             playerDataManager.createPlayerData(online.getUniqueId());
         }
+
+        new BukkitRunnable(){
+            @Override
+            public void run() {
+                pve1.update();
+                Bukkit.broadcastMessage("Motd: " + pve1.getMotd());
+                Bukkit.broadcastMessage("Online: " + pve1.getOnline());
+            }
+        }.runTaskTimer(this, 0, 20);
 
         updateScoreboards();
     }
@@ -72,7 +86,7 @@ public class Main extends JavaPlugin {
         pluginManager.registerEvents(new PlayerBankManager(), this);
         pluginManager.registerEvents(new ChatFormatter(), this);
         pluginManager.registerEvents(new HotbarManager(), this);
-        pluginManager.registerEvents(new SelectorGUI(), this);
+        pluginManager.registerEvents(new GameSelectorGUI(), this);
         pluginManager.registerEvents(new ScoreboardManager(), this);
         pluginManager.registerEvents(new HealthFoodManager(), this);
         pluginManager.registerEvents(new PlaceBreakBlock(), this);
