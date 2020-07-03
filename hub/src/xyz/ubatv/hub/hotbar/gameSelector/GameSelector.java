@@ -11,11 +11,13 @@ public class GameSelector {
 
     private GameSelectorGUI gameSelectorGUI = new GameSelectorGUI();
 
-    public void openGUI(Player player){
-        gameSelectorGUI.openInventory(player);
-    }
+    public int hotbarSlot = 0;
 
     public ItemStack hotbarItem(){
         return main.itemAPI.item(Material.COMPASS, "§5§lGame §7Selector", "§7Right-click to open this menu.");
+    }
+
+    public void openGUI(Player player){
+        gameSelectorGUI.openInventory(player);
     }
 }

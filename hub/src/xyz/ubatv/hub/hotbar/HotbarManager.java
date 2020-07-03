@@ -1,6 +1,5 @@
 package xyz.ubatv.hub.hotbar;
 
-import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -9,12 +8,10 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
-import org.bukkit.inventory.ItemStack;
 import xyz.ubatv.hub.Main;
 import xyz.ubatv.hub.hotbar.gameSelector.GameSelector;
 
 import java.util.Objects;
-import java.util.UUID;
 
 public class HotbarManager implements Listener {
 
@@ -22,23 +19,33 @@ public class HotbarManager implements Listener {
 
     private GameSelector gameSelector = new GameSelector();
     private ServerInfo serverInfo = new ServerInfo();
+    private Visibility visibility = new Visibility();
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event){
         Player player = event.getPlayer();
-        UUID uuid = player.getUniqueId();
 
         player.getInventory().clear();
 
-        ItemStack gameSelectorItem = gameSelector.hotbarItem();
-        ItemStack serverInfoItem = serverInfo.hotbarItem();
+        boolean visibilityValue = main.playerDataManager.getPlayersHidden(player.getUniqueId());
 
-        player.getInventory().setItem(0, gameSelectorItem);
-        player.getInventory().setItem(1, serverInfoItem);
+        player.getInventory().setItem(gameSelector.hotbarSlot, gameSelector.hotbarItem());
+        player.getInventory().setItem(serverInfo.hotbarSlot, serverInfo.hotbarItem());
+        player.getInventory().setItem(visibility.hotbarSlot, visibility.hotbarItem(visibilityValue));
+
+        if(!visibility.hidden.isEmpty()){
+            for(Player target : visibility.hidden){
+                target.hidePlayer(main, player);
+            }
+        }
+
+        visibility.setVisibility(player, visibilityValue);
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event){
+        Player player = event.getPlayer();
+        visibility.hidden.remove(player);
     }
 
     @EventHandler
@@ -54,6 +61,12 @@ public class HotbarManager implements Listener {
 
         if(event.getItem().getType().equals(serverInfo.hotbarItem().getType())){
             serverInfo.sendServerInfo(player);
+            return;
+        }
+
+        if(event.getItem().getType().equals(visibility.hotbarItem(false).getType())
+        || event.getItem().getType().equals(visibility.hotbarItem(true).getType())){
+            visibility.toggleVisibility(player);
             return;
         }
     }

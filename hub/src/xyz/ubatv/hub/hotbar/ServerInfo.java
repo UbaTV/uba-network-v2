@@ -9,6 +9,8 @@ public class ServerInfo {
 
     private Main main = Main.getInstance();
 
+    public int hotbarSlot = 1;
+
     public ItemStack hotbarItem(){
         return main.itemAPI.item(Material.BOOK, "§5§lServer §7Info", "§7Right-click to show the server info.");
     }

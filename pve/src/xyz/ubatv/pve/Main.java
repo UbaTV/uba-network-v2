@@ -1,7 +1,6 @@
 package xyz.ubatv.pve;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
@@ -53,7 +52,6 @@ public class Main extends JavaPlugin {
     public WorldReset worldReset;
 
     // TODO Buffers and Shop
-    // TODO Self Revive and Team Revive
 
     @Override
     public void onEnable() {
@@ -104,7 +102,6 @@ public class Main extends JavaPlugin {
     }
 
     private void preload(){
-
         worldReset = new WorldReset();
         File file = Bukkit.getWorld("world").getWorldFolder();
         WorldReset.unloadWorld(Bukkit.getWorld("world"));
@@ -121,8 +118,7 @@ public class Main extends JavaPlugin {
                 mySQLYML.getConfig().getInt("port"),
                 mySQLYML.getConfig().getString("username"),
                 mySQLYML.getConfig().getString("password"),
-                mySQLYML.getConfig().getString("database")
-        );
+                mySQLYML.getConfig().getString("database"));
         playerDataManager = new PlayerDataManager();
         playerDataTable = new PlayerDataTable();
         pveTable = new PvETable();
