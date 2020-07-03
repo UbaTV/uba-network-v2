@@ -10,6 +10,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import xyz.ubatv.hub.Main;
 import xyz.ubatv.hub.hotbar.gameSelector.GameSelector;
+import xyz.ubatv.hub.hotbar.profile.ProfileManager;
+import xyz.ubatv.hub.hotbar.store.StoreManager;
 
 import java.util.Objects;
 
@@ -20,6 +22,8 @@ public class HotbarManager implements Listener {
     private GameSelector gameSelector = new GameSelector();
     private ServerInfo serverInfo = new ServerInfo();
     private Visibility visibility = new Visibility();
+    private ProfileManager profile = new ProfileManager();
+    private StoreManager store = new StoreManager();
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event){
@@ -32,6 +36,8 @@ public class HotbarManager implements Listener {
         player.getInventory().setItem(gameSelector.hotbarSlot, gameSelector.hotbarItem());
         player.getInventory().setItem(serverInfo.hotbarSlot, serverInfo.hotbarItem());
         player.getInventory().setItem(visibility.hotbarSlot, visibility.hotbarItem(visibilityValue));
+        player.getInventory().setItem(profile.hotbarSlot, profile.hotbarItem(player));
+        player.getInventory().setItem(store.hotbarSlot, store.hotbarItem());
 
         if(!visibility.hidden.isEmpty()){
             for(Player target : visibility.hidden){
@@ -67,6 +73,16 @@ public class HotbarManager implements Listener {
         if(event.getItem().getType().equals(visibility.hotbarItem(false).getType())
         || event.getItem().getType().equals(visibility.hotbarItem(true).getType())){
             visibility.toggleVisibility(player);
+            return;
+        }
+
+        if(event.getItem().getType().equals(profile.hotbarItem(player).getType())){
+            player.sendMessage(main.textUtils.error + "This feature is still in development.");
+            return;
+        }
+
+        if(event.getItem().getType().equals(store.hotbarItem().getType())){
+            player.sendMessage(main.textUtils.error + "This feature is still in development.");
             return;
         }
     }
