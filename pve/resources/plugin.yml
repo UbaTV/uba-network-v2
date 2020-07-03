@@ -15,5 +15,7 @@ commands:
     description: This command was developed by andreubita.
     aliases:
       - sr
-      - srevive
-      - selfr
+  teamrevive:
+    description: This command was developed by andreubita.
+    aliases:
+      - tr

@@ -13,7 +13,7 @@ import xyz.ubatv.pve.playerData.PlayerData;
 
 import java.util.UUID;
 
-public class SelfRevive implements CommandExecutor {
+public class TeamRevive implements CommandExecutor {
 
     private Main main = Main.getInstance();
 
@@ -23,28 +23,32 @@ public class SelfRevive implements CommandExecutor {
             Player player = (Player) sender;
             UUID uuid = player.getUniqueId();
             if(main.gameManager.gameStatus.equals(GameStatus.ROUND_DAY)
-            || main.gameManager.gameStatus.equals(GameStatus.ROUND_NIGHT)){
-                if(main.gameManager.dead.contains(uuid)){
+                    || main.gameManager.gameStatus.equals(GameStatus.ROUND_NIGHT)){
+                if(!main.gameManager.dead.isEmpty()){
                     PlayerData playerData = main.playerDataManager.getPlayerData(uuid);
-                    if(playerData.getSelfRevives() > 0){
-                        main.playerDataManager.setSelfRevives(uuid, playerData.getSelfRevives() - 1);
+                    if(playerData.getTeamRevives() > 0){
+                        main.playerDataManager.setTeamRevives(uuid, playerData.getTeamRevives() - 1);
                         playerData.update();
-                        main.gameManager.alive.add(uuid);
-                        main.gameManager.dead.remove(uuid);
-                        player.setGameMode(GameMode.SURVIVAL);
-                        player.teleport(main.gameManager.game);
-                        Bukkit.broadcastMessage(main.textUtils.right + "§5" + player.getName() + "§7 just used §5Self Revive");
+                        for(UUID targetUUID : main.gameManager.dead){
+                            Player target = Bukkit.getPlayer(targetUUID);
+                            main.gameManager.alive.add(targetUUID);
+                            main.gameManager.dead.remove(targetUUID);
+                            assert target != null;
+                            target.setGameMode(GameMode.SURVIVAL);
+                            target.teleport(main.gameManager.game);
+                        }
+                        Bukkit.broadcastMessage(main.textUtils.right + "§5" + player.getName() + "§7 just used §5Team Revive");
                         for(Player target : Bukkit.getOnlinePlayers()){
                             target.playSound(target.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 1f, 1f);
                         }
                     }else{
-                        player.sendMessage(main.textUtils.error + "You don't have enough §5Self Revives");
+                        player.sendMessage(main.textUtils.error + "You don't have enough §5Team Revives");
                     }
                     return false;
                 }
             }
 
-            player.sendMessage(main.textUtils.error + "§5Self Revive §7is not available");
+            player.sendMessage(main.textUtils.error + "§5Team Revive §7is not available");
             return false;
         }else{
             sender.sendMessage(main.textUtils.playerOnly);
