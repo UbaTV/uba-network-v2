@@ -14,6 +14,7 @@ import xyz.ubatv.hub.events.PlaceBreakBlock;
 import xyz.ubatv.hub.hotbar.HotbarManager;
 import xyz.ubatv.hub.hotbar.gameSelector.GameSelectorGUI;
 import xyz.ubatv.hub.hotbar.gameSelector.PingServer;
+import xyz.ubatv.hub.hotbar.gameSelector.PvEStatus;
 import xyz.ubatv.hub.mysql.MySQLConnection;
 import xyz.ubatv.hub.mysql.MySQLYML;
 import xyz.ubatv.hub.playerData.PlayerData;
@@ -24,6 +25,7 @@ import xyz.ubatv.hub.rankSystem.RankCommand;
 import xyz.ubatv.hub.rankSystem.RankManager;
 import xyz.ubatv.hub.scoreboard.ScoreboardHelper;
 import xyz.ubatv.hub.scoreboard.ScoreboardManager;
+import xyz.ubatv.hub.utils.BungeeUtils;
 import xyz.ubatv.hub.utils.ItemAPI;
 import xyz.ubatv.hub.utils.TextUtils;
 
@@ -42,8 +44,8 @@ public class Main extends JavaPlugin {
     public ItemAPI itemAPI;
     public PlayerBankManager playerBankManager;
     public BankTable bankTable;
-
-    PingServer pve1 = new PingServer("localhost", 25567);
+    public PvEStatus pveStatus;
+    public BungeeUtils bungeeUtils;
 
     @Override
     public void onEnable() {
@@ -52,20 +54,15 @@ public class Main extends JavaPlugin {
         registerEvents();
         registerCommands();
 
+        bungeeChannels();
+
         preLoad();
 
         for(Player online : Bukkit.getOnlinePlayers()){
             playerDataManager.createPlayerData(online.getUniqueId());
         }
 
-        new BukkitRunnable(){
-            @Override
-            public void run() {
-                pve1.update();
-                Bukkit.broadcastMessage("Motd: " + pve1.getMotd());
-                Bukkit.broadcastMessage("Online: " + pve1.getOnline());
-            }
-        }.runTaskTimer(this, 0, 20);
+        pveStatus.checkServers();
 
         updateScoreboards();
     }
@@ -116,6 +113,8 @@ public class Main extends JavaPlugin {
                 mySQLYML.getConfig().getString("password"),
                 mySQLYML.getConfig().getString("database")
         );
+        pveStatus = new PvEStatus();
+        bungeeUtils = new BungeeUtils();
     }
 
     private void updateScoreboards(){
@@ -142,6 +141,10 @@ public class Main extends JavaPlugin {
                 }
             }
         }.runTaskTimer(this,  0, 20*3);
+    }
+
+    private void bungeeChannels(){
+        Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
     }
 
     public MySQLConnection getMySQL() {

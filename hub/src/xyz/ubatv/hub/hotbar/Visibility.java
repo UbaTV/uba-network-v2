@@ -20,7 +20,7 @@ public class Visibility {
     public int hotbarSlot = 8;
 
     public ItemStack hotbarItem(boolean visibility){
-        return visibility ?
+        return (!visibility) ?
                 main.itemAPI.item(Material.GLOWSTONE_DUST, "§7Visibility: §a§lOn", "§7Right-click to §nhide§r§7 all players") :
                 main.itemAPI.item(Material.REDSTONE, "§7Visibility: §c§lOff", "§7Right-click to §nshow§r§7 all players");
     }

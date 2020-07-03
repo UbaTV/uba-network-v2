@@ -1,5 +1,7 @@
 package xyz.ubatv.hub.hotbar.gameSelector;
 
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -11,6 +13,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import xyz.ubatv.hub.Main;
+
+import java.util.UUID;
 
 public class GameSelectorGUI implements InventoryHolder, Listener {
 
@@ -41,8 +45,19 @@ public class GameSelectorGUI implements InventoryHolder, Listener {
         int slot = event.getSlot();
 
         if(slot == 13){
-            player.closeInventory();
-            player.sendMessage(main.textUtils.warning + "Minigame still in development.");
+            String available = " ";
+            for(String server : main.pveStatus.servers.keySet()){
+                GameStatus gameStatus = main.pveStatus.servers.get(server);
+                if(gameStatus.equals(GameStatus.WAITING)){
+                    available = server;
+                    player.sendMessage(main.textUtils.right + "Connecting to §5" + server);
+                    main.bungeeUtils.connectToServer(player.getUniqueId(), server);
+                    break;
+                }
+            }
+            if(available.equalsIgnoreCase(" ")) {
+                player.sendMessage(main.textUtils.error + "All PvE servers are full.");
+            }
         }
     }
 

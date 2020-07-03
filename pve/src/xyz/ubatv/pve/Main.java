@@ -61,7 +61,7 @@ public class Main extends JavaPlugin {
         registerEvents();
 
         preload();
-        bungeeCommunication();
+        bungeeChannels();
 
         gameManager.preloadGame();
         gameManager.startLobby();
@@ -169,7 +169,7 @@ public class Main extends JavaPlugin {
         }.runTaskTimer(this,  0, 20*3);
     }
 
-    private void bungeeCommunication(){
+    private void bungeeChannels(){
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
     }
 

@@ -1,39 +1,31 @@
 package xyz.ubatv.hub.hotbar.gameSelector;
 
-import xyz.ubatv.hub.utils.SocketsUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.scheduler.BukkitRunnable;
+import xyz.ubatv.hub.Main;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.Socket;
+import java.util.HashMap;
 
 public class PvEStatus {
 
-    public void handshakePvE(){
-        try{
-            Socket socket = new Socket();
-            socket.connect(new InetSocketAddress("localhost", 25565), 2000);
+    private Main main = Main.getInstance();
 
-            DataInputStream in = new DataInputStream(socket.getInputStream());
-            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+    public HashMap<String, GameStatus> servers = new HashMap<>();
 
-            ByteArrayOutputStream handshakeBytes = new ByteArrayOutputStream();
-            DataOutputStream handshake = new DataOutputStream(handshakeBytes);
+    PingServer pve1 = new PingServer("localhost", 25567);
 
-            handshake.writeByte(0x00);
-            SocketsUtils.writeVarInt(handshake, 736); // 1.16.1 Protocol number
-            SocketsUtils.writeVarInt(handshake, "localhost".length());
-            handshake.writeBytes("localhost");
-            handshake.writeShort(25567);
-
-            SocketsUtils.writeVarInt(handshake, 1);
-            SocketsUtils.writeVarInt(out, handshakeBytes.size());
-        }catch (IOException e){
-            // Server Offline
-            e.printStackTrace();
-        }
-
+    public void checkServers(){
+        new BukkitRunnable(){
+            @Override
+            public void run() {
+                pve1.update();
+                if(pve1.getMotd().equalsIgnoreCase("waiting")){
+                    main.pveStatus.servers.put("pve1", GameStatus.WAITING);
+                }else{
+                    main.pveStatus.servers.put("pve1", GameStatus.INGAME);
+                }
+            }
+        }.runTaskTimer(main, 0, 20);
     }
+
 }
