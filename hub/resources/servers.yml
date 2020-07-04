@@ -1,0 +1,9 @@
+pve1:
+  ip: localhost
+  port: 25567
+pve2:
+  ip: localhost
+  port: 25567
+pve3:
+  ip: localhost
+  port: 25567

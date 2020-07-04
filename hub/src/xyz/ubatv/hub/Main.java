@@ -15,6 +15,7 @@ import xyz.ubatv.hub.hotbar.HotbarManager;
 import xyz.ubatv.hub.hotbar.gameSelector.GameSelectorGUI;
 import xyz.ubatv.hub.hotbar.gameSelector.PingServer;
 import xyz.ubatv.hub.hotbar.gameSelector.PvEStatus;
+import xyz.ubatv.hub.hotbar.gameSelector.ServersYML;
 import xyz.ubatv.hub.mysql.MySQLConnection;
 import xyz.ubatv.hub.mysql.MySQLYML;
 import xyz.ubatv.hub.playerData.PlayerData;
@@ -28,8 +29,6 @@ import xyz.ubatv.hub.scoreboard.ScoreboardManager;
 import xyz.ubatv.hub.utils.BungeeUtils;
 import xyz.ubatv.hub.utils.ItemAPI;
 import xyz.ubatv.hub.utils.TextUtils;
-
-import java.net.ConnectException;
 
 public class Main extends JavaPlugin {
 
@@ -46,6 +45,7 @@ public class Main extends JavaPlugin {
     public BankTable bankTable;
     public PvEStatus pveStatus;
     public BungeeUtils bungeeUtils;
+    public ServersYML serversYML;
 
     @Override
     public void onEnable() {
@@ -74,6 +74,7 @@ public class Main extends JavaPlugin {
         }
 
         mySQLYML.unload();
+        serversYML.unload();
     }
 
     private void registerEvents(){
@@ -98,7 +99,6 @@ public class Main extends JavaPlugin {
     private void preLoad(){
         mySQLYML = new MySQLYML();
         mySQLYML.loadConfig();
-
         bankTable = new BankTable();
         textUtils = new TextUtils();
         itemAPI = new ItemAPI();
@@ -115,6 +115,8 @@ public class Main extends JavaPlugin {
         );
         pveStatus = new PvEStatus();
         bungeeUtils = new BungeeUtils();
+        serversYML = new ServersYML();
+        serversYML.loadConfig();
     }
 
     private void updateScoreboards(){

@@ -200,7 +200,8 @@ public class GameManager {
         new BukkitRunnable(){
             @Override
             public void run() {
-                Bukkit.shutdown();
+                // builtin:restart is a command built-in MultiCraft
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "builtin:restart");
             }
         }.runTaskLater(main, 20*3);
     }
