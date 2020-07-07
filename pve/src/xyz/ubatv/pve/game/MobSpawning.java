@@ -21,19 +21,19 @@ public class MobSpawning implements Listener {
     private Main main = Main.getInstance();
 
     public static int spawnedMobs = 0;
-    public final int maxMobSpawn = 30;
+    public final int maxMobSpawn = 40;
 
     @EventHandler
     public void onMobKill(EntityDeathEvent event){
         if(event.getEntity() instanceof Monster){
             Monster entity = (Monster) event.getEntity();
+            spawnedMobs--;
             if(entity.getKiller() != null){
                 if(main.gameManager.gameStatus.equals(GameStatus.ROUND_NIGHT)){
                     main.gameManager.mobsToKill--;
                     Player player = entity.getKiller();
                     PlayerData playerData = main.playerDataManager.getPlayerData(player.getUniqueId());
                     playerData.incrementMobsKilled();
-                    spawnedMobs--;
                     main.playerBankManager.addGameCoins(player.getUniqueId(), getKillReward(entity.getType()));
                 }
             }

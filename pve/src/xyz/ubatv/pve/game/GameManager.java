@@ -183,6 +183,7 @@ public class GameManager {
     }
 
     public void clearMobs(){
+        MobSpawning.spawnedMobs = 0;
         for (Entity entity : main.gameManager.world.getEntities()) {
             if (!(entity instanceof Player) && entity instanceof LivingEntity) {
                 entity.remove();
