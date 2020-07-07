@@ -150,10 +150,6 @@ public class PlayerDataManager implements Listener {
         return r >= n;
     }
 
-    public void updateTablistName(Player player){
-        String rankName = main.rankManager.rankName(getRank(player.getUniqueId()));
-    }
-
     public void updateListName(Player player){
         Ranks rank = getRank(player.getUniqueId());
         if(rank.equals(Ranks.DEFAULT)){
@@ -169,7 +165,7 @@ public class PlayerDataManager implements Listener {
         UUID uuid = player.getUniqueId();
         main.playerDataTable.createPlayer(player);
         createPlayerData(uuid);
-        updateTablistName(player);
+        updateListName(player);
     }
 
     @EventHandler

@@ -2,6 +2,10 @@ package xyz.ubatv.hub;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -103,7 +107,14 @@ public class Main extends JavaPlugin {
     }
 
     private void preLoad(){
-        Bukkit.getWorld("world").setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
+        World world = Bukkit.getWorld("world");
+        assert world != null;
+        world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
+        for (Entity entity : world.getEntities()) {
+            if (!(entity instanceof Player) && entity instanceof LivingEntity) {
+                entity.remove();
+            }
+        }
 
         mySQLYML = new MySQLYML();
         mySQLYML.loadConfig();

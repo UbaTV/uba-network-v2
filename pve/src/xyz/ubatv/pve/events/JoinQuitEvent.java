@@ -2,6 +2,7 @@ package xyz.ubatv.pve.events;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,6 +12,7 @@ import org.bukkit.event.server.ServerListPingEvent;
 import xyz.ubatv.pve.Main;
 import xyz.ubatv.pve.game.GameStatus;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class JoinQuitEvent implements Listener {
@@ -26,6 +28,8 @@ public class JoinQuitEvent implements Listener {
         player.getInventory().clear();
         player.setHealth(20);
         player.setFoodLevel(20);
+
+        Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_ATTACK_SPEED)).setBaseValue(100);
 
         if(main.gameManager.gameStatus.equals(GameStatus.WAITING) || main.gameManager.gameStatus.equals(GameStatus.STARTING)){
             main.gameManager.waiting.add(uuid);

@@ -12,6 +12,7 @@ import xyz.ubatv.pve.commands.TeamRevive;
 import xyz.ubatv.pve.events.DeathEvent;
 import xyz.ubatv.pve.events.EntityDamage;
 import xyz.ubatv.pve.events.JoinQuitEvent;
+import xyz.ubatv.pve.events.PlaceBreakEvent;
 import xyz.ubatv.pve.game.*;
 import xyz.ubatv.pve.location.LocationManager;
 import xyz.ubatv.pve.location.LocationYML;
@@ -97,6 +98,7 @@ public class Main extends JavaPlugin {
         pluginManager.registerEvents(new EntityDamage(), this);
         pluginManager.registerEvents(new DeathEvent(), this);
         pluginManager.registerEvents(new ScoreboardManager(), this);
+        pluginManager.registerEvents(new PlaceBreakEvent(), this);
     }
 
     public void preload(){
