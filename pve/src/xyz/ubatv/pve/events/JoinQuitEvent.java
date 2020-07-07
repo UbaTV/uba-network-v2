@@ -53,7 +53,8 @@ public class JoinQuitEvent implements Listener {
     @EventHandler
     public void changeMotd(ServerListPingEvent event){
         event.setMaxPlayers(10);
-        if(main.gameManager.gameStatus.equals(GameStatus.WAITING)){
+        if(main.gameManager.gameStatus.equals(GameStatus.WAITING)
+        || (main.gameManager.gameStatus.equals(GameStatus.STARTING) && main.gameManager.maxPlayer > Bukkit.getOnlinePlayers().size())){
             event.setMotd("WAITING");
         }else{
             event.setMotd("INGAME");

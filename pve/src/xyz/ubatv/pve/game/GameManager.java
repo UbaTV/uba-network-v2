@@ -133,6 +133,7 @@ public class GameManager {
                     public void run() {
                         if(main.gameManager.alive.size() == 0){
                             dayTime = timeDay;
+                            ScoreboardManager.dayTime = timeDay;
                             cancel();
                             endGame(false);
                         }else{
@@ -145,6 +146,7 @@ public class GameManager {
                                     sendDayNightTitle(false);
                                     main.gameManager.world.setTime(nightTicks);
                                     dayTime = timeDay;
+                                    ScoreboardManager.dayTime = timeDay;
                                     main.mobSpawning.startMobSpawn();
                                 }else{
                                     if(dayTime == 60 || dayTime == 30 || dayTime == 10 || dayTime <= 5){

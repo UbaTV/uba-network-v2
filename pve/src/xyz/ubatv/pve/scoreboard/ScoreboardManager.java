@@ -29,9 +29,11 @@ public class ScoreboardManager implements Listener {
         else gameState = "This is a bug. Report to staff";
 
         scoreboardHelper.setTitle(main.textUtils.serverName);
-        scoreboardHelper.setSlot(5, "  ");
-        scoreboardHelper.setSlot(4, gameState);
-        scoreboardHelper.setSlot(3, "§7Coins: §5" + main.playerBankManager.playerBank.get(player.getUniqueId()).getGameCoins());
+        scoreboardHelper.setSlot(6, "  ");
+        scoreboardHelper.setSlot(5, gameState);
+        //scoreboardHelper.setSlot(3, "§7Coins: §5" + main.playerBankManager.playerBank.get(player.getUniqueId()).getGameCoins());
+        scoreboardHelper.setSlot(4, "§7Self Revives§8: §5" + main.playerDataManager.getSelfRevives(player.getUniqueId()));
+        scoreboardHelper.setSlot(3, "§7Team Revives§8: §5" + main.playerDataManager.getTeamRevives(player.getUniqueId()));
         scoreboardHelper.setSlot(2, " ");
         scoreboardHelper.setSlot(1, "§7" + main.textUtils.serverIp);
     }

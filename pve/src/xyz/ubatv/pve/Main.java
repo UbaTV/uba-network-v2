@@ -160,8 +160,10 @@ public class Main extends JavaPlugin {
                             ScoreboardHelper scoreboardHelper = ScoreboardHelper.getScoreboard(player);
 
                             // Sidebar Scoreboard
-                            scoreboardHelper.setSlot(4, gameState);
-                            scoreboardHelper.setSlot(3, "§7Coins: §5" + playerBankManager.playerBank.get(player.getUniqueId()).getGameCoins());
+                            scoreboardHelper.setSlot(5, gameState);
+                            //scoreboardHelper.setSlot(3, "§7Coins: §5" + playerBankManager.playerBank.get(player.getUniqueId()).getGameCoins());
+                            scoreboardHelper.setSlot(4, "§7Self Revives§8: §5" + playerDataManager.getSelfRevives(player.getUniqueId()));
+                            scoreboardHelper.setSlot(3, "§7Team Revives§8: §5" + playerDataManager.getTeamRevives(player.getUniqueId()));
                         }
                     }
                 }
