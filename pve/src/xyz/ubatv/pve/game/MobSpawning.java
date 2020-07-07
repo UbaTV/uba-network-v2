@@ -1,6 +1,5 @@
 package xyz.ubatv.pve.game;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Monster;
@@ -14,11 +13,15 @@ import xyz.ubatv.pve.Main;
 import xyz.ubatv.pve.playerData.PlayerData;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 
 public class MobSpawning implements Listener {
 
     private Main main = Main.getInstance();
+
+    public static int spawnedMobs = 0;
+    public final int maxMobSpawn = 30;
 
     @EventHandler
     public void onMobKill(EntityDeathEvent event){
@@ -30,6 +33,7 @@ public class MobSpawning implements Listener {
                     Player player = entity.getKiller();
                     PlayerData playerData = main.playerDataManager.getPlayerData(player.getUniqueId());
                     playerData.incrementMobsKilled();
+                    spawnedMobs--;
                     main.playerBankManager.addGameCoins(player.getUniqueId(), getKillReward(entity.getType()));
                 }
             }
@@ -59,7 +63,10 @@ public class MobSpawning implements Listener {
                         int randomLocation = random.nextInt(locationSize);
                         int mobToSpawn = random.nextInt(roundMobs.size());
                         Location loc = main.gameManager.mobSpawn.get(randomLocation);
-                        loc.getWorld().spawnEntity(loc, roundMobs.get(mobToSpawn));
+                        if(spawnedMobs < maxMobSpawn){
+                            Objects.requireNonNull(loc.getWorld()).spawnEntity(loc, roundMobs.get(mobToSpawn));
+                            spawnedMobs++;
+                        }
                     }
                 }
             }
@@ -73,10 +80,10 @@ public class MobSpawning implements Listener {
             mobs.add(EntityType.SKELETON);
         }
         if(round >= 3){
-            //mobs.add(EntityType.CREEPER);
+            mobs.add(EntityType.SPIDER);
         }
         if(round >= 4){
-            mobs.add(EntityType.SPIDER);
+            //mobs.add(EntityType.CREEPER);
         }
 
         if(round >= 5){
@@ -87,8 +94,8 @@ public class MobSpawning implements Listener {
     }
 
     public int numberOfSpawnsPerTime(int round){
-        if (round == 2) return 1;
-        else if (round == 3) return 2;
+        if (round == 2) return 2;
+        else if (round == 3) return 3;
         else if (round == 4) return 3;
         else if (round == 5) return 4;
         else return 2;

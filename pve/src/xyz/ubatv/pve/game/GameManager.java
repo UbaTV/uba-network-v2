@@ -66,6 +66,7 @@ public class GameManager {
         // World settings
         resetWorld();
         clearMobs();
+        MobSpawning.spawnedMobs = 0;
         main.gameManager.world = main.gameManager.lobby.getWorld();
         world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
         world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
@@ -99,6 +100,7 @@ public class GameManager {
     }
 
     public void startGame(){
+        MobSpawning.spawnedMobs = 0;
         changeGameState(GameStatus.ROUND_DAY);
         main.gameManager.currentRound = 1;
         for(int i = 0; i < main.gameManager.waiting.size(); i++){
@@ -166,6 +168,7 @@ public class GameManager {
                                         changeGameState(GameStatus.ROUND_DAY);
                                         main.gameManager.currentRound++;
                                         ScoreboardManager.dayTime = timeDay;
+                                        MobSpawning.spawnedMobs = 0;
                                         Bukkit.broadcastMessage("    §7Round §5§l" + main.gameManager.currentRound);
                                         sendDayNightTitle(true);
                                         clearMobs();
