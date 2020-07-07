@@ -73,10 +73,10 @@ public class MobSpawning implements Listener {
             mobs.add(EntityType.SKELETON);
         }
         if(round >= 3){
-            mobs.add(EntityType.CREEPER);
+            //mobs.add(EntityType.CREEPER);
         }
         if(round >= 4){
-            mobs.add(EntityType.WITCH);
+            mobs.add(EntityType.SPIDER);
         }
 
         if(round >= 5){
@@ -87,8 +87,8 @@ public class MobSpawning implements Listener {
     }
 
     public int numberOfSpawnsPerTime(int round){
-        if (round == 2) return 2;
-        else if (round == 3) return 3;
+        if (round == 2) return 1;
+        else if (round == 3) return 2;
         else if (round == 4) return 3;
         else if (round == 5) return 4;
         else return 2;
@@ -97,9 +97,9 @@ public class MobSpawning implements Listener {
     // return in seconds
     public int mobSpawnDelay(int round){
         if (round == 2) return 4;
-        else if (round == 3) return 3;
+        else if (round == 3) return 4;
         else if (round == 4) return 3;
-        else if (round == 5) return 2;
+        else if (round == 5) return 3;
         else return 5;
     }
 
@@ -112,12 +112,13 @@ public class MobSpawning implements Listener {
     }
 
     public int getKillReward(EntityType entityType){
-        if(entityType.equals(EntityType.ZOMBIE)
-                || entityType.equals(EntityType.SKELETON)) return 5;
-        else if(entityType.equals(EntityType.CREEPER)) return 10;
-        else if(entityType.equals(EntityType.WITCH)) return 15;
-        else if(entityType.equals(EntityType.BLAZE)) return 25;
-        else if(entityType.equals(EntityType.WITHER_SKELETON)) return 50;
+        if(entityType.equals(EntityType.ZOMBIE)) return 10;
+        else if(entityType.equals(EntityType.SKELETON)) return 15;
+        else if(entityType.equals(EntityType.CREEPER)) return 30;
+        else if(entityType.equals(EntityType.SPIDER)) return 25;
+        else if(entityType.equals(EntityType.WITCH)) return 40;
+        else if(entityType.equals(EntityType.BLAZE)) return 50;
+        else if(entityType.equals(EntityType.WITHER_SKELETON)) return 100;
         else return 10;
     }
 }

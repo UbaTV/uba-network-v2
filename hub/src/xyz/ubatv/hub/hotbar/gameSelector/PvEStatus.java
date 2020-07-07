@@ -15,10 +15,13 @@ public class PvEStatus {
             main.serversYML.getConfig().getInt("pve1.port"));
     PingServer pve2 = new PingServer(main.serversYML.getConfig().getString("pve2.ip"),
             main.serversYML.getConfig().getInt("pve2.port"));
-    PingServer pve3 = new PingServer(main.serversYML.getConfig().getString("pve3.ip"),
-            main.serversYML.getConfig().getInt("pve3.port"));
 
     public void checkServers(){
+        checkPvE1();
+        checkPvE2();
+    }
+
+    public void checkPvE1(){
         new BukkitRunnable(){
             @Override
             public void run() {
@@ -28,22 +31,21 @@ public class PvEStatus {
                 }else{
                     main.pveStatus.servers.put("pve1", GameStatus.INGAME);
                 }
+            }
+        }.runTaskTimer(main, 0, 20*2);
+    }
 
+    public void checkPvE2(){
+        new BukkitRunnable(){
+            @Override
+            public void run() {
                 pve2.update();
                 if(pve2.getMotd().equalsIgnoreCase("waiting")){
                     main.pveStatus.servers.put("pve2", GameStatus.WAITING);
                 }else{
                     main.pveStatus.servers.put("pve2", GameStatus.INGAME);
                 }
-
-                pve3.update();
-                if(pve3.getMotd().equalsIgnoreCase("waiting")){
-                    main.pveStatus.servers.put("pve3", GameStatus.WAITING);
-                }else{
-                    main.pveStatus.servers.put("pve3", GameStatus.INGAME);
-                }
             }
-        }.runTaskTimer(main, 0, 20);
+        }.runTaskTimer(main, 0, 20*5);
     }
-
 }

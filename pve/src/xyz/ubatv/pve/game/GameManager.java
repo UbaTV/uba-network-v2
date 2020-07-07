@@ -1,7 +1,13 @@
 package xyz.ubatv.pve.game;
 
+import com.boydti.fawe.FaweAPI;
+import com.sk89q.worldedit.EditSession;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormats;
+import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldedit.math.transform.Transform;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -10,7 +16,10 @@ import xyz.ubatv.pve.playerData.PlayerData;
 import xyz.ubatv.pve.scoreboard.ScoreboardManager;
 import xyz.ubatv.pve.utils.TextUtils;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class GameManager {
@@ -28,6 +37,7 @@ public class GameManager {
 
     public Location lobby = null;
     public Location game = null;
+    public Location schem = null;
     public ArrayList<Location> mobSpawn = new ArrayList<>();
 
     public GameStatus gameStatus = GameStatus.WAITING;
@@ -43,6 +53,7 @@ public class GameManager {
         // Define required locations
         main.gameManager.lobby = main.locationManager.getLocation("lobby");
         main.gameManager.game = main.locationManager.getLocation("game");
+        main.gameManager.schem = main.locationManager.getLocation("schem");
         for(String name : main.locationYML.getConfig().getConfigurationSection("").getKeys(false)){
             if(name.length() >= 8){
                 if(name.substring(0, 8).equalsIgnoreCase("mobspawn")){
@@ -53,9 +64,11 @@ public class GameManager {
         }
 
         // World settings
+        resetWorld();
         clearMobs();
         main.gameManager.world = main.gameManager.lobby.getWorld();
         world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+        world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
     }
 
     public void startLobby(){
@@ -119,6 +132,7 @@ public class GameManager {
                     @Override
                     public void run() {
                         if(main.gameManager.alive.size() == 0){
+                            dayTime = timeDay;
                             cancel();
                             endGame(false);
                         }else{
@@ -181,7 +195,7 @@ public class GameManager {
             PlayerData playerData = main.playerDataManager.getPlayerData(player.getUniqueId());
             int pveCoinsReward = (main.gameManager.currentRound - 1) * 20 + ((int) (playerData.getMobsKilled() * 0.9));
             player.sendMessage(main.textUtils.right + "You won §5" + pveCoinsReward + " PvE§7 coins.");
-            main.bankTable.addPvECoins(player.getUniqueId(), pveCoinsReward);
+            main.playerBankManager.addPvECoins(player.getUniqueId(), pveCoinsReward);
         }
 
         new BukkitRunnable(){
@@ -197,13 +211,11 @@ public class GameManager {
             main.playerHandler.connectToHub(player.getUniqueId());
         }
 
-        new BukkitRunnable(){
-            @Override
-            public void run() {
-                // builtin:restart is a command built-in MultiCraft
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "builtin:restart");
-            }
-        }.runTaskLater(main, 20*3);
+        resetWorld();
+
+        main.preload();
+        main.gameManager.preloadGame();
+        main.gameManager.startLobby();
     }
 
     // day (true) night (false)
@@ -233,6 +245,26 @@ public class GameManager {
                 assert player != null;
                 player.sendTitle("", "§5Night §7Time", 10, 20, 10);
                 TextUtils.sendActionBarMessage(player, "§7Time to §5§nfight");
+            }
+        }
+    }
+
+    public void resetWorld(){
+        File schem = new File(main.getDataFolder(), "pve.schem");
+        int x = main.gameManager.schem.getBlockX(),
+                    y = main.gameManager.schem.getBlockY(),
+                    z = main.gameManager.schem.getBlockZ();
+        try {
+            EditSession editSession = ClipboardFormats.findByFile(schem).load(schem).paste(FaweAPI.getWorld("world"), BlockVector3.at(x, y, z), false, true, (Transform) null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        List<Entity> entList = world.getEntities();
+
+        for(Entity current : entList){
+            if (current instanceof Item){
+                current.remove();
             }
         }
     }

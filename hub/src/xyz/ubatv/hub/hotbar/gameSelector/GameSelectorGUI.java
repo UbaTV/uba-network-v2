@@ -1,7 +1,5 @@
 package xyz.ubatv.hub.hotbar.gameSelector;
 
-import com.google.common.io.ByteArrayDataOutput;
-import com.google.common.io.ByteStreams;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -13,8 +11,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import xyz.ubatv.hub.Main;
-
-import java.util.UUID;
 
 public class GameSelectorGUI implements InventoryHolder, Listener {
 

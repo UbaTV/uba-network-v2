@@ -1,7 +1,6 @@
 package xyz.ubatv.pve;
 
 import org.bukkit.Bukkit;
-import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -28,7 +27,6 @@ import xyz.ubatv.pve.scoreboard.ScoreboardHelper;
 import xyz.ubatv.pve.scoreboard.ScoreboardManager;
 import xyz.ubatv.pve.utils.TextUtils;
 
-import java.io.File;
 import java.util.Objects;
 
 public class Main extends JavaPlugin {
@@ -49,9 +47,9 @@ public class Main extends JavaPlugin {
     public GameManager gameManager;
     public PlayerHandler playerHandler;
     public MobSpawning mobSpawning;
-    public WorldReset worldReset;
 
     // TODO Buffers and Shop
+
 
     @Override
     public void onEnable() {
@@ -80,7 +78,7 @@ public class Main extends JavaPlugin {
                 playerHandler.connectToHub(player.getUniqueId());
             }
         }
-        Bukkit.getServer().unloadWorld(Objects.requireNonNull(Bukkit.getWorld("world")), false);
+        Bukkit.getServer().unloadWorld(Objects.requireNonNull(Bukkit.getWorld("world")), true);
     }
 
     private void registerCommands(){
@@ -101,14 +99,14 @@ public class Main extends JavaPlugin {
         pluginManager.registerEvents(new ScoreboardManager(), this);
     }
 
-    private void preload(){
-        worldReset = new WorldReset();
-        File file = Bukkit.getWorld("world").getWorldFolder();
-        WorldReset.unloadWorld(Bukkit.getWorld("world"));
-        File template = new File("./template", ".");
-        WorldReset.deleteWorld(file);
-        WorldReset.copyFileStructure(template, file);
-        new WorldCreator("world").createWorld();
+    public void preload(){
+//        worldReset = new WorldReset();
+//        File file = Bukkit.getWorld("world").getWorldFolder();
+//        WorldReset.unloadWorld(Bukkit.getWorld("world"));
+//        File template = new File("./template", ".");
+//        WorldReset.deleteWorld(file);
+//        WorldReset.copyFileStructure(template, file);
+//        new WorldCreator("world").createWorld();
 
         textUtils = new TextUtils();
         mySQLYML = new MySQLYML();
@@ -148,21 +146,23 @@ public class Main extends JavaPlugin {
                 else if(gameManager.gameStatus.equals(GameStatus.ROUND_DAY)) gameState = "§7Time Left§8: " + minLeft + "m" + secLeft + "s";
                 else gameState = "This is a bug. Report to staff";
 
-                for(Player player : Bukkit.getOnlinePlayers()){
-                    if(ScoreboardHelper.hasScoreboard(player)){
-                        // Tab Header and Footer
-                        int online = Bukkit.getServer().getOnlinePlayers().size();
-                        int max = Bukkit.getServer().getMaxPlayers();
-                        player.setPlayerListHeaderFooter(
-                                "\n" + textUtils.serverName + "\n" +
-                                        "§aOnline: §5" + online + "§7/§5" + max + "\n",
-                                "\n§7Website: §5" + textUtils.website + "\n");
+                if(Bukkit.getOnlinePlayers().size() != 0){
+                    for(Player player : Bukkit.getOnlinePlayers()){
+                        if(ScoreboardHelper.hasScoreboard(player)){
+                            // Tab Header and Footer
+                            int online = Bukkit.getServer().getOnlinePlayers().size();
+                            int max = Bukkit.getServer().getMaxPlayers();
+                            player.setPlayerListHeaderFooter(
+                                    "\n" + textUtils.serverName + "\n" +
+                                            "§aOnline: §5" + online + "§7/§5" + max + "\n",
+                                    "\n§7Website: §5" + textUtils.website + "\n");
 
-                        ScoreboardHelper scoreboardHelper = ScoreboardHelper.getScoreboard(player);
+                            ScoreboardHelper scoreboardHelper = ScoreboardHelper.getScoreboard(player);
 
-                        // Sidebar Scoreboard
-                        scoreboardHelper.setSlot(4, gameState);
-                        scoreboardHelper.setSlot(3, "§7Coins: §5" + playerBankManager.playerBank.get(player.getUniqueId()).getGameCoins());
+                            // Sidebar Scoreboard
+                            scoreboardHelper.setSlot(4, gameState);
+                            scoreboardHelper.setSlot(3, "§7Coins: §5" + playerBankManager.playerBank.get(player.getUniqueId()).getGameCoins());
+                        }
                     }
                 }
             }

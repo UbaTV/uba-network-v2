@@ -82,7 +82,7 @@ public class HotbarManager implements Listener {
         }
 
         if(event.getItem().getType().equals(store.hotbarItem().getType())){
-            player.sendMessage(main.textUtils.error + "This feature is still in development.");
+            store.openGUI(player);
             return;
         }
     }

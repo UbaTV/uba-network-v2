@@ -1,6 +1,7 @@
 package xyz.ubatv.hub;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameRule;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -16,11 +17,15 @@ import xyz.ubatv.hub.hotbar.gameSelector.GameSelectorGUI;
 import xyz.ubatv.hub.hotbar.gameSelector.PingServer;
 import xyz.ubatv.hub.hotbar.gameSelector.PvEStatus;
 import xyz.ubatv.hub.hotbar.gameSelector.ServersYML;
+import xyz.ubatv.hub.hotbar.store.StoreGUI;
+import xyz.ubatv.hub.hotbar.store.StoreManager;
+import xyz.ubatv.hub.hotbar.store.pve.PvEGUI;
 import xyz.ubatv.hub.mysql.MySQLConnection;
 import xyz.ubatv.hub.mysql.MySQLYML;
 import xyz.ubatv.hub.playerData.PlayerData;
 import xyz.ubatv.hub.playerData.PlayerDataManager;
 import xyz.ubatv.hub.playerData.PlayerDataTable;
+import xyz.ubatv.hub.playerData.PvETable;
 import xyz.ubatv.hub.rankSystem.ChatFormatter;
 import xyz.ubatv.hub.rankSystem.RankCommand;
 import xyz.ubatv.hub.rankSystem.RankManager;
@@ -46,6 +51,7 @@ public class Main extends JavaPlugin {
     public PvEStatus pveStatus;
     public BungeeUtils bungeeUtils;
     public ServersYML serversYML;
+    public PvETable pveTable;
 
     @Override
     public void onEnable() {
@@ -62,9 +68,8 @@ public class Main extends JavaPlugin {
             playerDataManager.createPlayerData(online.getUniqueId());
         }
 
-        pveStatus.checkServers();
-
         updateScoreboards();
+        pveStatus.checkServers();
     }
 
     @Override
@@ -88,6 +93,7 @@ public class Main extends JavaPlugin {
         pluginManager.registerEvents(new ScoreboardManager(), this);
         pluginManager.registerEvents(new HealthFoodManager(), this);
         pluginManager.registerEvents(new PlaceBreakBlock(), this);
+        pluginManager.registerEvents(new StoreManager(), this);
     }
 
     private void registerCommands(){
@@ -97,8 +103,12 @@ public class Main extends JavaPlugin {
     }
 
     private void preLoad(){
+        Bukkit.getWorld("world").setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
+
         mySQLYML = new MySQLYML();
         mySQLYML.loadConfig();
+        serversYML = new ServersYML();
+        serversYML.loadConfig();
         bankTable = new BankTable();
         textUtils = new TextUtils();
         itemAPI = new ItemAPI();
@@ -115,8 +125,7 @@ public class Main extends JavaPlugin {
         );
         pveStatus = new PvEStatus();
         bungeeUtils = new BungeeUtils();
-        serversYML = new ServersYML();
-        serversYML.loadConfig();
+        pveTable = new PvETable();
     }
 
     private void updateScoreboards(){

@@ -82,6 +82,7 @@ public class PlayerDataManager implements Listener {
         Player player = event.getPlayer();
         UUID uuid = player.getUniqueId();
         main.playerDataTable.createPlayer(player);
+        main.pveTable.createPlayer(player);
         createPlayerData(uuid);
         updateListName(player);
     }

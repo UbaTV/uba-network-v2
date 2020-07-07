@@ -62,7 +62,7 @@ public class RankCommand implements CommandExecutor {
                     return false;
                 }
                 main.playerDataManager.setRank(targetUUID, rank);
-                sender.sendMessage(main.textUtils.right + "You changed §5" + target.getName() + "§7's rank to" + main.rankManager.rankName(rank));
+                sender.sendMessage(main.textUtils.right + "You changed §5" + target.getName() + "§7's rank to " + main.rankManager.rankName(rank));
                 target.sendMessage(main.textUtils.warning + "Your rank has been changed " + main.rankManager.rankName(rank));
                 main.playerDataManager.updateListName(target);
             }catch (IllegalArgumentException e){
