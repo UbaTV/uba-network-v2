@@ -225,30 +225,14 @@ public class GameManager {
     }
 
     // day (true) night (false)
-    public void sendDayNightTitle(boolean dayNight){
-        if(dayNight){
-            for(UUID uuid : alive){
-                Player player = Bukkit.getPlayer(uuid);
-                assert player != null;
+    public void sendDayNightTitle(boolean dayNight) {
+        if (dayNight) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
                 player.sendTitle("", "§5Day §7Time", 10, 20, 10);
                 TextUtils.sendActionBarMessage(player, "§7Gather resources to §5§nfight§7 at night.");
             }
-            for(UUID uuid : dead){
-                Player player = Bukkit.getPlayer(uuid);
-                assert player != null;
-                player.sendTitle("", "§5Day §7Time", 10, 20, 10);
-                TextUtils.sendActionBarMessage(player, "§7Gather resources to §5§nfight§7 at night.");
-            }
-        }else{
-            for(UUID uuid : alive){
-                Player player = Bukkit.getPlayer(uuid);
-                assert player != null;
-                player.sendTitle("", "§5Night §7Time", 10, 20, 10);
-                TextUtils.sendActionBarMessage(player, "§7Time to §5§nfight");
-            }
-            for(UUID uuid : dead){
-                Player player = Bukkit.getPlayer(uuid);
-                assert player != null;
+        } else {
+            for (Player player : Bukkit.getOnlinePlayers()) {
                 player.sendTitle("", "§5Night §7Time", 10, 20, 10);
                 TextUtils.sendActionBarMessage(player, "§7Time to §5§nfight");
             }

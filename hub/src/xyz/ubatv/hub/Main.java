@@ -21,6 +21,7 @@ import xyz.ubatv.hub.hotbar.gameSelector.GameSelectorGUI;
 import xyz.ubatv.hub.hotbar.gameSelector.PingServer;
 import xyz.ubatv.hub.hotbar.gameSelector.PvEStatus;
 import xyz.ubatv.hub.hotbar.gameSelector.ServersYML;
+import xyz.ubatv.hub.hotbar.profile.ProfileManager;
 import xyz.ubatv.hub.hotbar.store.StoreGUI;
 import xyz.ubatv.hub.hotbar.store.StoreManager;
 import xyz.ubatv.hub.hotbar.store.pve.PvEGUI;
@@ -98,6 +99,7 @@ public class Main extends JavaPlugin {
         pluginManager.registerEvents(new HealthFoodManager(), this);
         pluginManager.registerEvents(new PlaceBreakBlock(), this);
         pluginManager.registerEvents(new StoreManager(), this);
+        pluginManager.registerEvents(new ProfileManager(), this);
     }
 
     private void registerCommands(){

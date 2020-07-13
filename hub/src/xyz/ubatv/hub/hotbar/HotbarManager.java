@@ -35,9 +35,9 @@ public class HotbarManager implements Listener {
 
         player.getInventory().setItem(gameSelector.hotbarSlot, gameSelector.hotbarItem());
         player.getInventory().setItem(serverInfo.hotbarSlot, serverInfo.hotbarItem());
-        player.getInventory().setItem(visibility.hotbarSlot, visibility.hotbarItem(visibilityValue));
         player.getInventory().setItem(profile.hotbarSlot, profile.hotbarItem(player));
         player.getInventory().setItem(store.hotbarSlot, store.hotbarItem());
+        player.getInventory().setItem(visibility.hotbarSlot, visibility.hotbarItem(visibilityValue));
 
         if(!visibility.hidden.isEmpty()){
             for(Player target : visibility.hidden){
@@ -77,13 +77,12 @@ public class HotbarManager implements Listener {
         }
 
         if(event.getItem().getType().equals(profile.hotbarItem(player).getType())){
-            player.sendMessage(main.textUtils.error + "This feature is still in development.");
+            profile.openGUI(player);
             return;
         }
 
         if(event.getItem().getType().equals(store.hotbarItem().getType())){
             store.openGUI(player);
-            return;
         }
     }
 
