@@ -2,7 +2,6 @@ package xyz.ubatv.hub;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
-import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -13,18 +12,16 @@ import org.bukkit.scheduler.BukkitRunnable;
 import xyz.ubatv.hub.bank.BankCommand;
 import xyz.ubatv.hub.bank.BankTable;
 import xyz.ubatv.hub.bank.PlayerBankManager;
+import xyz.ubatv.hub.commands.BuildMode;
 import xyz.ubatv.hub.events.HealthFoodManager;
 import xyz.ubatv.hub.events.JoinQuitEvent;
-import xyz.ubatv.hub.events.PlaceBreakBlock;
 import xyz.ubatv.hub.hotbar.HotbarManager;
 import xyz.ubatv.hub.hotbar.gameSelector.GameSelectorGUI;
-import xyz.ubatv.hub.hotbar.gameSelector.PingServer;
 import xyz.ubatv.hub.hotbar.gameSelector.PvEStatus;
 import xyz.ubatv.hub.hotbar.gameSelector.ServersYML;
 import xyz.ubatv.hub.hotbar.profile.ProfileManager;
-import xyz.ubatv.hub.hotbar.store.StoreGUI;
+import xyz.ubatv.hub.hotbar.profile.collectibles.CollectiblesManager;
 import xyz.ubatv.hub.hotbar.store.StoreManager;
-import xyz.ubatv.hub.hotbar.store.pve.PvEGUI;
 import xyz.ubatv.hub.mysql.MySQLConnection;
 import xyz.ubatv.hub.mysql.MySQLYML;
 import xyz.ubatv.hub.playerData.PlayerData;
@@ -97,15 +94,17 @@ public class Main extends JavaPlugin {
         pluginManager.registerEvents(new GameSelectorGUI(), this);
         pluginManager.registerEvents(new ScoreboardManager(), this);
         pluginManager.registerEvents(new HealthFoodManager(), this);
-        pluginManager.registerEvents(new PlaceBreakBlock(), this);
         pluginManager.registerEvents(new StoreManager(), this);
         pluginManager.registerEvents(new ProfileManager(), this);
+        pluginManager.registerEvents(new CollectiblesManager(), this);
+        pluginManager.registerEvents(new BuildMode(), this);
     }
 
     private void registerCommands(){
         getCommand("test").setExecutor(new TestCommand());
         getCommand("rank").setExecutor(new RankCommand());
         getCommand("bank").setExecutor(new BankCommand());
+        getCommand("buildmode").setExecutor(new BuildMode());
     }
 
     private void preLoad(){
