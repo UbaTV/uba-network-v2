@@ -9,14 +9,14 @@ public class PlaceBreakEvent implements Listener {
 
     @EventHandler
     public void onPlace(BlockPlaceEvent event){
-        if(event.getBlock().getLocation().getBlockY() >= 120){
+        if(event.getBlock().getLocation().getBlockY() >= 115){
             event.setCancelled(true);
         }
     }
 
     @EventHandler
     public void onBreak(BlockBreakEvent event){
-        if(event.getBlock().getLocation().getBlockY() >= 120){
+        if(event.getBlock().getLocation().getBlockY() >= 115){
             event.setCancelled(true);
         }
     }
