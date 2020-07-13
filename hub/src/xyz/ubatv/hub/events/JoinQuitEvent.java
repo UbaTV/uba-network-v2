@@ -18,14 +18,15 @@ public class JoinQuitEvent implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event){
         Player player = event.getPlayer();
-        UUID uuid = player.getUniqueId();
 
         player.setHealth(20);
         player.setFoodLevel(20);
 
         event.setJoinMessage("§8[§a§l+§8] §5" + player.getName());
 
-        if(!main.playerDataManager.hasPermission(uuid, Ranks.ADMIN)) player.setGameMode(GameMode.ADVENTURE);
+        main.collectiblesTable.createPlayer(player);
+
+        player.setGameMode(GameMode.ADVENTURE);
 
         player.sendMessage(" ");
         main.textUtils.sendCenteredMessage(player, "§7Welcome to the " + main.textUtils.serverName + "§7!");

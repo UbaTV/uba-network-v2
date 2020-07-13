@@ -21,6 +21,8 @@ import xyz.ubatv.hub.hotbar.gameSelector.PvEStatus;
 import xyz.ubatv.hub.hotbar.gameSelector.ServersYML;
 import xyz.ubatv.hub.hotbar.profile.ProfileManager;
 import xyz.ubatv.hub.hotbar.profile.collectibles.CollectiblesManager;
+import xyz.ubatv.hub.hotbar.profile.collectibles.CollectiblesTable;
+import xyz.ubatv.hub.hotbar.profile.collectibles.trails.TrailsManager;
 import xyz.ubatv.hub.hotbar.store.StoreManager;
 import xyz.ubatv.hub.mysql.MySQLConnection;
 import xyz.ubatv.hub.mysql.MySQLYML;
@@ -54,6 +56,7 @@ public class Main extends JavaPlugin {
     public BungeeUtils bungeeUtils;
     public ServersYML serversYML;
     public PvETable pveTable;
+    public CollectiblesTable collectiblesTable;
 
     @Override
     public void onEnable() {
@@ -98,6 +101,7 @@ public class Main extends JavaPlugin {
         pluginManager.registerEvents(new ProfileManager(), this);
         pluginManager.registerEvents(new CollectiblesManager(), this);
         pluginManager.registerEvents(new BuildMode(), this);
+        pluginManager.registerEvents(new TrailsManager(), this);
     }
 
     private void registerCommands(){
@@ -138,6 +142,7 @@ public class Main extends JavaPlugin {
         pveStatus = new PvEStatus();
         bungeeUtils = new BungeeUtils();
         pveTable = new PvETable();
+        collectiblesTable = new CollectiblesTable();
     }
 
     private void updateScoreboards(){
