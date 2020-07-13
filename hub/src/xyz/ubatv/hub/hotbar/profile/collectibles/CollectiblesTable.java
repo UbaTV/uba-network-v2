@@ -2,7 +2,6 @@ package xyz.ubatv.hub.hotbar.profile.collectibles;
 
 import org.bukkit.entity.Player;
 import xyz.ubatv.hub.Main;
-import xyz.ubatv.hub.rankSystem.Ranks;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,7 +26,30 @@ public class CollectiblesTable {
         try{
             ResultSet result = main.getMySQL().querySQL("SELECT * FROM collectibles WHERE uuid='" + uuid.toString() + "';");
             if(!result.next())
-                main.getMySQL().updateSQL("INSERT INTO collectibles (`uuid`,`trails_flame`,`trails_hearths`,`trails_magic`,`trails_smoke`,`trails_angry`) VALUES ('" + uuid.toString() + "','0','0','0','0','0')");
+                main.getMySQL().updateSQL("INSERT INTO collectibles (`uuid`,`trail`,`trails_flame`,`trails_hearths`,`trails_magic`,`trails_smoke`,`trails_angry`) VALUES ('" + uuid.toString() + "','0','0','0','0','0','0')");
+        }catch (SQLException | ClassNotFoundException e){
+            e.printStackTrace();
+        }
+    }
+
+    public int getTrail(UUID uuid){
+        if(!this.playerExists(uuid)){
+            return 0;
+        }
+
+        try {
+            ResultSet result = main.getMySQL().querySQL("SELECT trail FROM collectibles WHERE uuid='" + uuid.toString() + "';");
+            result.next();
+            return result.getInt("trail");
+        }catch (SQLException | ClassNotFoundException e){
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public void setTrail(UUID uuid, int trail){
+        try{
+            main.mySQL.updateSQL("UPDATE collectibles SET trail='" + trail + "' WHERE uuid='" + uuid.toString() + "';");
         }catch (SQLException | ClassNotFoundException e){
             e.printStackTrace();
         }

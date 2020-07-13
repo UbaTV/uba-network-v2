@@ -8,6 +8,7 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import xyz.ubatv.hub.hotbar.profile.ProfileGUI;
+import xyz.ubatv.hub.hotbar.profile.collectibles.trails.TrailsGUI;
 
 public class CollectiblesManager implements Listener {
 
@@ -28,7 +29,8 @@ public class CollectiblesManager implements Listener {
         }
 
         if(slot == 14){
-            // Open Trails
+            TrailsGUI trailsGUI = new TrailsGUI(player);
+            trailsGUI.openInventory(player);
         }
 
         if(slot == 20){
