@@ -5,4 +5,6 @@ import xyz.ubatv.hub.Main;
 public class TrailsHandler {
 
     private Main main = Main.getInstance();
+
+    // TODO
 }

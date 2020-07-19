@@ -23,9 +23,13 @@ public class GameSelectorGUI implements InventoryHolder, Listener {
     }
 
     public void createGUI(){
-        ItemStack pve = main.itemAPI.item(Material.DIAMOND_SWORD, "§5§lPvE", "§7Click to go to minigame.");
+        ItemStack kingdoms = main.itemAPI.item(Material.DIAMOND_SWORD, "§5§lKINGDOMS", "§cComing soon...");
+        ItemStack pve = main.itemAPI.item(Material.ZOMBIE_HEAD, "§5§lPvE", "§7Click to go to minigame.");
+        ItemStack comingSoon = main.itemAPI.item(Material.BARRIER, "§8???", "§cComing soon...");
 
+        gameSelector.setItem(11, kingdoms);
         gameSelector.setItem(13, pve);
+        gameSelector.setItem(15, comingSoon);
     }
 
     @EventHandler
