@@ -201,7 +201,7 @@ public class GameManager {
             PlayerData playerData = main.playerDataManager.getPlayerData(player.getUniqueId());
             int pveCoinsReward = (main.gameManager.currentRound - 1) * 20 + ((int) (playerData.getMobsKilled() * 0.9));
             player.sendMessage(main.textUtils.right + "You won §5" + pveCoinsReward + " PvE§7 coins.");
-            main.playerBankManager.addPvECoins(player.getUniqueId(), pveCoinsReward);
+            main.bankTable.addPvECoins(player.getUniqueId(), pveCoinsReward);
         }
 
         new BukkitRunnable(){
