@@ -28,7 +28,7 @@ public class GameManager {
 
     public World world = Bukkit.getServer().getWorld("world");
 
-    public final int minPlayer = 2;
+    public final int minPlayer = 1;
     public final int maxPlayer = 4;
     public final int totalRounds = 5;
     public final int timeDay = 60*5; // 5 minutes
