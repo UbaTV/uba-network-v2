@@ -24,6 +24,8 @@ import xyz.ubatv.hub.hotbar.profile.collectibles.CollectiblesManager;
 import xyz.ubatv.hub.hotbar.profile.collectibles.CollectiblesTable;
 import xyz.ubatv.hub.hotbar.profile.collectibles.trails.TrailsManager;
 import xyz.ubatv.hub.hotbar.store.StoreManager;
+import xyz.ubatv.hub.location.LocationManager;
+import xyz.ubatv.hub.location.LocationYML;
 import xyz.ubatv.hub.mysql.MySQLConnection;
 import xyz.ubatv.hub.mysql.MySQLYML;
 import xyz.ubatv.hub.playerData.PlayerData;
@@ -57,6 +59,8 @@ public class Main extends JavaPlugin {
     public ServersYML serversYML;
     public PvETable pveTable;
     public CollectiblesTable collectiblesTable;
+    public LocationYML locationYML;
+    public LocationManager locationManager;
 
     @Override
     public void onEnable() {
@@ -143,6 +147,9 @@ public class Main extends JavaPlugin {
         bungeeUtils = new BungeeUtils();
         pveTable = new PvETable();
         collectiblesTable = new CollectiblesTable();
+        locationYML = new LocationYML();
+        locationYML.loadConfig();
+        locationManager = new LocationManager();
     }
 
     private void updateScoreboards(){
