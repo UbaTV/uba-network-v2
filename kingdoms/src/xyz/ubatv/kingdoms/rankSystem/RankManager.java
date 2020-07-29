@@ -1,4 +1,4 @@
-package xyz.ubatv.hub.rankSystem;
+package xyz.ubatv.kingdoms.rankSystem;
 
 import java.util.ArrayList;
 import java.util.List;

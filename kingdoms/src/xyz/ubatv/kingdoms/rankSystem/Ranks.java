@@ -1,4 +1,4 @@
-package xyz.ubatv.hub.rankSystem;
+package xyz.ubatv.kingdoms.rankSystem;
 
 public enum Ranks {
     DEFAULT,
