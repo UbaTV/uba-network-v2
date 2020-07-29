@@ -87,7 +87,7 @@ public class MobSpawning implements Listener {
         }
 
         if(round >= 5){
-            mobs.add(EntityType.BLAZE);
+            mobs.add(EntityType.WITCH);
         }
 
         return mobs;

@@ -25,9 +25,12 @@ public class JoinQuitEvent implements Listener {
         UUID uuid = player.getUniqueId();
 
         event.setJoinMessage("§8[§a§l+§8] §5" + player.getName());
+
+        // Clear player last play
         player.getInventory().clear();
         player.setHealth(20);
         player.setFoodLevel(20);
+        player.setLevel(0);
 
         Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_ATTACK_SPEED)).setBaseValue(100);
 

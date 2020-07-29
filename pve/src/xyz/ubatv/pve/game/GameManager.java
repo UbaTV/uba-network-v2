@@ -77,7 +77,7 @@ public class GameManager {
         main.gameManager.world.setTime(dayTicks);
 
         new BukkitRunnable() {
-            int countdown = 5;
+            int countdown = 30;
             @Override
             public void run() {
                 if(main.gameManager.waiting.size() >= minPlayer){
