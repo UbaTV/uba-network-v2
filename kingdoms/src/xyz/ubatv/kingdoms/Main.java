@@ -7,6 +7,7 @@ import xyz.ubatv.kingdoms.mysql.MySQLConnection;
 import xyz.ubatv.kingdoms.mysql.MySQLYML;
 import xyz.ubatv.kingdoms.playerData.PlayerDataManager;
 import xyz.ubatv.kingdoms.playerData.PlayerDataTable;
+import xyz.ubatv.kingdoms.rankSystem.ChatFormatter;
 import xyz.ubatv.kingdoms.rankSystem.RankManager;
 import xyz.ubatv.kingdoms.utils.TextUtils;
 
@@ -43,6 +44,7 @@ public class Main extends JavaPlugin {
     private void registerCommands(){
         PluginManager pluginManager = Bukkit.getServer().getPluginManager();
         pluginManager.registerEvents(new PlayerDataManager(), this);
+        pluginManager.registerEvents(new ChatFormatter(), this);
     }
 
     public void preload(){
