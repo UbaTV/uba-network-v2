@@ -22,5 +22,5 @@
 ## Play Today 🍇
 IP: play.ubatv.xyz
 
-## Autores 🧔
+## Authors 🧔
 - [andreubita](https://github.com/andreubita)

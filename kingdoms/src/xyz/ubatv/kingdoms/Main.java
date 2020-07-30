@@ -3,12 +3,15 @@ package xyz.ubatv.kingdoms;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import xyz.ubatv.kingdoms.events.JoinQuitEvent;
 import xyz.ubatv.kingdoms.mysql.MySQLConnection;
 import xyz.ubatv.kingdoms.mysql.MySQLYML;
 import xyz.ubatv.kingdoms.playerData.PlayerDataManager;
 import xyz.ubatv.kingdoms.playerData.PlayerDataTable;
 import xyz.ubatv.kingdoms.rankSystem.ChatFormatter;
 import xyz.ubatv.kingdoms.rankSystem.RankManager;
+import xyz.ubatv.kingdoms.skills.PlayerSkillsTable;
+import xyz.ubatv.kingdoms.skills.SkillsManager;
 import xyz.ubatv.kingdoms.utils.TextUtils;
 
 public class Main extends JavaPlugin {
@@ -21,6 +24,8 @@ public class Main extends JavaPlugin {
     public PlayerDataTable playerDataTable;
     public PlayerDataManager playerDataManager;
     public RankManager rankManager;
+    public PlayerSkillsTable skillsTable;
+    public SkillsManager skillsManager;
 
     @Override
     public void onEnable() {
@@ -38,13 +43,15 @@ public class Main extends JavaPlugin {
     }
 
     private void registerEvents(){
-
-    }
-
-    private void registerCommands(){
         PluginManager pluginManager = Bukkit.getServer().getPluginManager();
         pluginManager.registerEvents(new PlayerDataManager(), this);
         pluginManager.registerEvents(new ChatFormatter(), this);
+        pluginManager.registerEvents(new JoinQuitEvent(), this);
+        pluginManager.registerEvents(new SkillsManager(), this);
+    }
+
+    private void registerCommands(){
+
     }
 
     public void preload(){
@@ -61,6 +68,8 @@ public class Main extends JavaPlugin {
         playerDataTable = new PlayerDataTable();
         playerDataManager = new PlayerDataManager();
         rankManager = new RankManager();
+        skillsTable = new PlayerSkillsTable();
+        skillsManager = new SkillsManager();
     }
 
     private void bungeeChannels(){
