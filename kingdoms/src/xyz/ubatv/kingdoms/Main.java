@@ -11,7 +11,9 @@ import xyz.ubatv.kingdoms.playerData.PlayerDataTable;
 import xyz.ubatv.kingdoms.rankSystem.ChatFormatter;
 import xyz.ubatv.kingdoms.rankSystem.RankManager;
 import xyz.ubatv.kingdoms.skills.PlayerSkillsTable;
+import xyz.ubatv.kingdoms.skills.SkillsCommand;
 import xyz.ubatv.kingdoms.skills.SkillsManager;
+import xyz.ubatv.kingdoms.utils.ItemAPI;
 import xyz.ubatv.kingdoms.utils.TextUtils;
 
 public class Main extends JavaPlugin {
@@ -26,6 +28,7 @@ public class Main extends JavaPlugin {
     public RankManager rankManager;
     public PlayerSkillsTable skillsTable;
     public SkillsManager skillsManager;
+    public ItemAPI itemAPI;
 
     @Override
     public void onEnable() {
@@ -48,10 +51,11 @@ public class Main extends JavaPlugin {
         pluginManager.registerEvents(new ChatFormatter(), this);
         pluginManager.registerEvents(new JoinQuitEvent(), this);
         pluginManager.registerEvents(new SkillsManager(), this);
+        pluginManager.registerEvents(new SkillsCommand(), this);
     }
 
     private void registerCommands(){
-
+        getCommand("skills").setExecutor(new SkillsCommand());
     }
 
     public void preload(){
@@ -70,6 +74,7 @@ public class Main extends JavaPlugin {
         rankManager = new RankManager();
         skillsTable = new PlayerSkillsTable();
         skillsManager = new SkillsManager();
+        itemAPI = new ItemAPI();
     }
 
     private void bungeeChannels(){

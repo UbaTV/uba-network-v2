@@ -11,11 +11,13 @@ public class PlayerSkills {
     UUID uuid;
     public int mining;
     public int combat;
+    public int farming;
 
-    public PlayerSkills(UUID uuid, int mining, int combat){
+    public PlayerSkills(UUID uuid, int mining, int combat, int farming){
         this.uuid = uuid;
         this.mining = mining;
         this.combat = combat;
+        this.farming = farming;
     }
 
     public UUID getUUID() {
@@ -38,8 +40,17 @@ public class PlayerSkills {
         this.combat = combat;
     }
 
+    public int getFarming() {
+        return farming;
+    }
+
+    public void setFarming(int farming) {
+        this.farming = farming;
+    }
+
     public void update(){
         main.skillsTable.setMining(uuid, mining);
         main.skillsTable.setCombat(uuid, combat);
+        main.skillsTable.setFarming(uuid, farming);
     }
 }

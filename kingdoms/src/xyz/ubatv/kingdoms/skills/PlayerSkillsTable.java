@@ -26,7 +26,7 @@ public class PlayerSkillsTable {
         try{
             ResultSet result = main.getMySQL().querySQL("SELECT * FROM kingdomsSkills WHERE uuid='" + uuid.toString() + "';");
             if(!result.next())
-                main.getMySQL().updateSQL("INSERT INTO kingdomsSkills (`uuid`,`mining`,`combat`) VALUES ('" + uuid.toString() + "','0','0')");
+                main.getMySQL().updateSQL("INSERT INTO kingdomsSkills (`uuid`,`mining`,`combat`,`farming`) VALUES ('" + uuid.toString() + "','0','0','0')");
         }catch (SQLException | ClassNotFoundException e){
             e.printStackTrace();
         }
@@ -89,6 +89,37 @@ public class PlayerSkillsTable {
     public void addCombat(UUID uuid, int xp){
         try{
             main.mySQL.updateSQL("UPDATE kingdomsSkills SET combat='" + Math.max(getCombat(uuid) + xp, 0) + "' WHERE uuid='" + uuid.toString() + "';");
+        }catch (SQLException | ClassNotFoundException e){
+            e.printStackTrace();
+        }
+    }
+
+    public int getFarming(UUID uuid){
+        if(!this.playerExists(uuid)){
+            return 0;
+        }
+
+        try {
+            ResultSet result = main.getMySQL().querySQL("SELECT farming,uuid FROM kingdomsSkills WHERE uuid='" + uuid.toString() + "';");
+            result.next();
+            return result.getInt("farming");
+        }catch (SQLException | ClassNotFoundException e){
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public void setFarming(UUID uuid, int xp){
+        try{
+            main.mySQL.updateSQL("UPDATE kingdomsSkills SET farming='" + Math.max(xp, 0) + "' WHERE uuid='" + uuid.toString() + "';");
+        }catch (SQLException | ClassNotFoundException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void addFarming(UUID uuid, int xp){
+        try{
+            main.mySQL.updateSQL("UPDATE kingdomsSkills SET farming='" + Math.max(getCombat(uuid) + xp, 0) + "' WHERE uuid='" + uuid.toString() + "';");
         }catch (SQLException | ClassNotFoundException e){
             e.printStackTrace();
         }

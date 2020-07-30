@@ -8,3 +8,6 @@ authors:
 database: true
 website: https://ubatv.xyz
 prefix: Kingdoms
+commands:
+  skills:
+    description: This command was developed by andreubita.

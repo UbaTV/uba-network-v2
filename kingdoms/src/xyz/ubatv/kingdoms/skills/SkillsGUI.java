@@ -1,45 +1,43 @@
-package xyz.ubatv.hub.hotbar.profile;
+package xyz.ubatv.kingdoms.skills;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
-import xyz.ubatv.hub.Main;
+import xyz.ubatv.kingdoms.Main;
 
-public class ProfileGUI implements InventoryHolder {
+public class SkillsGUI implements InventoryHolder {
 
     private Main main = Main.getInstance();
 
-    public final Inventory profile;
+    public final Inventory skills;
     private Player player;
 
-    public ProfileGUI(Player player){
+    public SkillsGUI(Player player){
         this.player = player;
-        this.profile = Bukkit.createInventory(player, 9*6, "§5§lProfile");
+        this.skills = Bukkit.createInventory(player, 9*6, "§8Your Skills");
     }
 
     public void createGUI(){
         ItemStack stats = main.itemAPI.item(Material.BOOK, "§5§lStats", "§cIN DEVELOPMENT");
         ItemStack collectibles = main.itemAPI.item(Material.CHEST, "§5§lCollectibles", "§7Click to see your collectibles.");
         ItemStack settings = main.itemAPI.item(Material.REPEATER, "§5§lSettings", "§cIN DEVELOPMENT");
-        ItemStack info = main.itemAPI.skull(player, "§5Your Info", "§7Rank§8: §5" + main.playerDataManager.getRank(player.getUniqueId()), "§5Server §7Coins§8: §5" + main.playerBankManager.getServerCoins(player.getUniqueId()));
+        ItemStack close = main.itemAPI.item(Material.BARRIER, "§cClose", "");
 
-        profile.setItem(13, stats);
-        profile.setItem(29, collectibles);
-        profile.setItem(33, settings);
-        profile.setItem(49, info);
+        skills.setItem(13, stats);
+        skills.setItem(29, collectibles);
+        skills.setItem(49, close);
     }
 
     public void openInventory(Player player){
         createGUI();
-        player.openInventory(profile);
+        player.openInventory(skills);
     }
 
     @Override
     public Inventory getInventory() {
-        return profile;
+        return skills;
     }
 }

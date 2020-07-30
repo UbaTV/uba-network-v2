@@ -1,4 +1,4 @@
 package xyz.ubatv.kingdoms.skills.combat;
 
-public class CombatCommand {
+public class CombatGUI {
 }
