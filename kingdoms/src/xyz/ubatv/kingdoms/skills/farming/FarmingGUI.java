@@ -1,4 +1,4 @@
-package xyz.ubatv.kingdoms.skills.mining;
+package xyz.ubatv.kingdoms.skills.farming;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -8,16 +8,16 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import xyz.ubatv.kingdoms.Main;
 
-public class MiningGUI implements InventoryHolder {
+public class FarmingGUI implements InventoryHolder {
 
     private Main main = Main.getInstance();
 
-    public final Inventory mining;
+    public final Inventory farming;
     private Player player;
 
-    public MiningGUI(Player player){
+    public FarmingGUI(Player player){
         this.player = player;
-        this.mining = Bukkit.createInventory(player, 9*6, "§8Mining");
+        this.farming = Bukkit.createInventory(player, 9*6, "§8Farming");
     }
 
     public void createGUI(){
@@ -25,18 +25,19 @@ public class MiningGUI implements InventoryHolder {
         ItemStack back = main.itemAPI.item(Material.ARROW, "§aBack", "§7To the Skills Menu");
         ItemStack close = main.itemAPI.item(Material.BARRIER, "§cClose", "");
 
-        mining.setItem(22, inDev);
-        mining.setItem(48, back);
-        mining.setItem(49, close);
+        farming.setItem(22, inDev);
+        farming.setItem(48, back);
+        farming.setItem(49, close);
     }
 
     public void openInventory(Player player){
         createGUI();
-        player.openInventory(mining);
+        player.openInventory(farming);
     }
 
     @Override
     public Inventory getInventory() {
-        return mining;
+        return farming;
     }
+
 }

@@ -1,4 +1,4 @@
-package xyz.ubatv.kingdoms.skills.combat;
+package xyz.ubatv.kingdoms.skills.mining;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -9,11 +9,11 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import xyz.ubatv.kingdoms.skills.SkillsGUI;
 
-public class CombatGUIListener implements Listener {
+public class MiningGUIListener implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event){
-        if(!event.getView().getTitle().equalsIgnoreCase("§8Combat")) return;
+        if(!event.getView().getTitle().equalsIgnoreCase("§8Mining")) return;
         event.setCancelled(true);
         if(event.getClick().equals(ClickType.NUMBER_KEY)) return;
 

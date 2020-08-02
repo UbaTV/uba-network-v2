@@ -1,11 +1,18 @@
 package xyz.ubatv.kingdoms.skills;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemStack;
 import xyz.ubatv.kingdoms.Main;
+import xyz.ubatv.kingdoms.skills.combat.CombatGUI;
+import xyz.ubatv.kingdoms.skills.farming.FarmingGUI;
+import xyz.ubatv.kingdoms.skills.mining.MiningGUI;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -97,6 +104,38 @@ public class SkillsManager implements Listener {
             PlayerSkills data = getPlayerSkills(uuid);
             main.skillsManager.skills.remove(uuid);
             data.update();
+        }
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event){
+        if(!event.getView().getTitle().equalsIgnoreCase("§8Your Skills")) return;
+        event.setCancelled(true);
+        if(event.getClick().equals(ClickType.NUMBER_KEY)) return;
+
+        ItemStack item = event.getCurrentItem();
+        if(item == null || item.getType() == Material.AIR) return;
+
+        Player player = (Player) event.getWhoClicked();
+        int slot = event.getSlot();
+
+        if(slot == 21){
+            MiningGUI miningGUI = new MiningGUI(player);
+            miningGUI.openInventory(player);
+        }
+
+        if(slot == 22){
+            CombatGUI combatGUI = new CombatGUI(player);
+            combatGUI.openInventory(player);
+        }
+
+        if(slot == 23){
+            FarmingGUI farmingGUI = new FarmingGUI(player);
+            farmingGUI.openInventory(player);
+        }
+
+        if(slot == 49){
+            player.closeInventory();
         }
     }
 }
