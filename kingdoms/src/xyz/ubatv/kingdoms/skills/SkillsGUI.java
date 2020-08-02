@@ -21,13 +21,15 @@ public class SkillsGUI implements InventoryHolder {
     }
 
     public void createGUI(){
-        ItemStack menuItem = main.itemAPI.item(Material.BOOK, "§5§lStats", "§cIN DEVELOPMENT");
-        ItemStack collectibles = main.itemAPI.item(Material.CHEST, "§5§lCollectibles", "§7Click to see your collectibles.");
+        ItemStack mining = main.itemAPI.item(Material.STONE_PICKAXE, "§aMining", "§7Spend some time on the Mines", "§7to gain Mining XP");
+        ItemStack combat = main.itemAPI.item(Material.STONE_SWORD, "§aCombat", "§7Fight monsters and players to", "§7gain Combat XP");
+        ItemStack farming = main.itemAPI.item(Material.WHEAT_SEEDS, "§aFarming", "§7Harvest crops and kill", "§7animals to gain Farming XP");
         //ItemStack back = main.itemAPI.item(Material.ARROW, "§aBack", "§7To the Skills Menu");
         ItemStack close = main.itemAPI.item(Material.BARRIER, "§cClose", "");
 
-        skills.setItem(13, stats);
-        skills.setItem(29, collectibles);
+        skills.setItem(21, mining);
+        skills.setItem(22, combat);
+        skills.setItem(23, farming);
         skills.setItem(49, close);
     }
 

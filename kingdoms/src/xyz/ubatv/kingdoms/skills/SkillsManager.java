@@ -15,7 +15,17 @@ public class SkillsManager implements Listener {
 
     private Main main = Main.getInstance();
 
+    public final int maxLevel = 30;
+
     public Map<UUID, PlayerSkills> skills = new HashMap<>();
+
+    public int levelXp(int level){
+        return level >= maxLevel ? -1 : (level ^ 2) * 75;
+    }
+
+    public int xpToLevel(int xp){
+        return xp >= levelXp(maxLevel) ? 30 : (int) Math.floor(Math.sqrt(Math.floorDiv(xp, 75)));
+    }
 
     public boolean playerExists(UUID uuid){
         return main.skillsManager.skills.containsKey(uuid);
