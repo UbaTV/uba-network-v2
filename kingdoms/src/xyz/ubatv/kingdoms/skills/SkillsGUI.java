@@ -21,9 +21,9 @@ public class SkillsGUI implements InventoryHolder {
     }
 
     public void createGUI(){
-        ItemStack stats = main.itemAPI.item(Material.BOOK, "§5§lStats", "§cIN DEVELOPMENT");
+        ItemStack menuItem = main.itemAPI.item(Material.BOOK, "§5§lStats", "§cIN DEVELOPMENT");
         ItemStack collectibles = main.itemAPI.item(Material.CHEST, "§5§lCollectibles", "§7Click to see your collectibles.");
-        ItemStack settings = main.itemAPI.item(Material.REPEATER, "§5§lSettings", "§cIN DEVELOPMENT");
+        //ItemStack back = main.itemAPI.item(Material.ARROW, "§aBack", "§7To the Skills Menu");
         ItemStack close = main.itemAPI.item(Material.BARRIER, "§cClose", "");
 
         skills.setItem(13, stats);
