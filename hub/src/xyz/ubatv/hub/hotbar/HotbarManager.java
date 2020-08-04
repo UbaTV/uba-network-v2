@@ -77,7 +77,8 @@ public class HotbarManager implements Listener {
         }
 
         if(event.getItem().getType().equals(profile.hotbarItem(player).getType())){
-            profile.openGUI(player);
+            player.sendMessage(main.textUtils.error + "Feature still in development.");
+            //profile.openGUI(player);
             return;
         }
 
