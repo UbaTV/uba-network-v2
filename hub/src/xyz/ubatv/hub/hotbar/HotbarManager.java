@@ -33,11 +33,7 @@ public class HotbarManager implements Listener {
 
         boolean visibilityValue = main.playerDataManager.getPlayersHidden(player.getUniqueId());
 
-        player.getInventory().setItem(gameSelector.hotbarSlot, gameSelector.hotbarItem());
-        player.getInventory().setItem(serverInfo.hotbarSlot, serverInfo.hotbarItem());
-        player.getInventory().setItem(profile.hotbarSlot, profile.hotbarItem(player));
-        player.getInventory().setItem(store.hotbarSlot, store.hotbarItem());
-        player.getInventory().setItem(visibility.hotbarSlot, visibility.hotbarItem(visibilityValue));
+        giveHotbar(player);
 
         if(!visibility.hidden.isEmpty()){
             for(Player target : visibility.hidden){
@@ -46,6 +42,15 @@ public class HotbarManager implements Listener {
         }
 
         visibility.setVisibility(player, visibilityValue);
+    }
+
+    public void giveHotbar(Player player){
+        boolean visibilityValue = main.playerDataManager.getPlayersHidden(player.getUniqueId());
+        player.getInventory().setItem(gameSelector.hotbarSlot, gameSelector.hotbarItem());
+        player.getInventory().setItem(serverInfo.hotbarSlot, serverInfo.hotbarItem());
+        player.getInventory().setItem(profile.hotbarSlot, profile.hotbarItem(player));
+        player.getInventory().setItem(store.hotbarSlot, store.hotbarItem());
+        player.getInventory().setItem(visibility.hotbarSlot, visibility.hotbarItem(visibilityValue));
     }
 
     @EventHandler
@@ -85,28 +90,5 @@ public class HotbarManager implements Listener {
         if(event.getItem().getType().equals(store.hotbarItem().getType())){
             store.openGUI(player);
         }
-    }
-
-    @EventHandler
-    public void onDrop(PlayerDropItemEvent event){
-        event.setCancelled(true);
-    }
-
-    @EventHandler
-    public void onPickup(PlayerPickupArrowEvent event){
-        event.setCancelled(true);
-    }
-
-    @EventHandler
-    public void onItemPickup(EntityPickupItemEvent event){
-        if(event.getEntity() instanceof Player){
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void onInventoryClick(InventoryClickEvent event){
-        HumanEntity player = event.getWhoClicked();
-        if(Objects.equals(event.getClickedInventory(), player.getInventory())) event.setCancelled(true);
     }
 }

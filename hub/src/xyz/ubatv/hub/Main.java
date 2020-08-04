@@ -62,6 +62,7 @@ public class Main extends JavaPlugin {
     public CollectiblesTable collectiblesTable;
     public LocationYML locationYML;
     public LocationManager locationManager;
+    public HotbarManager hotbarManager;
 
     @Override
     public void onEnable() {
@@ -152,6 +153,7 @@ public class Main extends JavaPlugin {
         locationYML = new LocationYML();
         locationYML.loadConfig();
         locationManager = new LocationManager();
+        hotbarManager = new HotbarManager();
     }
 
     private void updateScoreboards(){
