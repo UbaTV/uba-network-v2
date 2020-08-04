@@ -27,7 +27,7 @@ public class PlayerDataTable {
         try{
             ResultSet result = main.getMySQL().querySQL("SELECT * FROM userData WHERE uuid='" + uuid.toString() + "';");
             if(!result.next())
-                main.getMySQL().updateSQL("INSERT INTO userData (`uuid`,`rank`,`onlineTime`,`hidePlayers`) VALUES ('" + uuid.toString() + "','0','0','0')");
+                main.getMySQL().updateSQL("INSERT INTO userData (`uuid`,`username`,`rank`,`onlineTime`,`hidePlayers`) VALUES ('" + uuid.toString() + "','" + player.getName() + "','0','0','0')");
         }catch (SQLException | ClassNotFoundException e){
             e.printStackTrace();
         }

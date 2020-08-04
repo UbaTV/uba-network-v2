@@ -19,3 +19,7 @@ commands:
     description: This command was developed by andreubita.
     aliases:
       - bm
+  setlocation:
+    description: This command was developed by andreubita.
+    aliases:
+      - setloc

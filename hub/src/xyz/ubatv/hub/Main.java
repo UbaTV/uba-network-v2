@@ -26,6 +26,7 @@ import xyz.ubatv.hub.hotbar.profile.collectibles.trails.TrailsManager;
 import xyz.ubatv.hub.hotbar.store.StoreManager;
 import xyz.ubatv.hub.location.LocationManager;
 import xyz.ubatv.hub.location.LocationYML;
+import xyz.ubatv.hub.location.SetLocationCommand;
 import xyz.ubatv.hub.mysql.MySQLConnection;
 import xyz.ubatv.hub.mysql.MySQLYML;
 import xyz.ubatv.hub.playerData.PlayerData;
@@ -113,6 +114,7 @@ public class Main extends JavaPlugin {
         getCommand("rank").setExecutor(new RankCommand());
         getCommand("bank").setExecutor(new BankCommand());
         getCommand("buildmode").setExecutor(new BuildMode());
+        getCommand("setlocation").setExecutor(new SetLocationCommand());
     }
 
     private void preLoad(){

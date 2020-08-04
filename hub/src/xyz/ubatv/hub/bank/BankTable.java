@@ -26,7 +26,7 @@ public class BankTable {
         try{
             ResultSet result = main.getMySQL().querySQL("SELECT * FROM bank WHERE uuid='" + uuid.toString() + "';");
             if(!result.next())
-                main.getMySQL().updateSQL("INSERT INTO bank (`uuid`,`serverCoins`,`pve`) VALUES ('" + uuid.toString() + "','0','0')");
+                main.getMySQL().updateSQL("INSERT INTO bank (`uuid`,`serverCoins`,`pve`,`kingdoms`) VALUES ('" + uuid.toString() + "','0','0','0')");
         }catch (SQLException | ClassNotFoundException e){
             e.printStackTrace();
         }
