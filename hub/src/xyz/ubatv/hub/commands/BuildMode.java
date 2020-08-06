@@ -105,5 +105,4 @@ public class BuildMode implements CommandExecutor, Listener {
         if(buildMode.contains(event.getWhoClicked())) return;
         if(Objects.equals(event.getClickedInventory(), player.getInventory())) event.setCancelled(true);
     }
-
 }

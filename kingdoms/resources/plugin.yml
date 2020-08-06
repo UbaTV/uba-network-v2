@@ -11,3 +11,5 @@ prefix: Kingdoms
 commands:
   skills:
     description: This command was developed by andreubita.
+  setloc:
+    description: This command was developed by andreubita

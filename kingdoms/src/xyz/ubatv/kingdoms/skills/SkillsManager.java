@@ -93,6 +93,7 @@ public class SkillsManager implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event){
         Player player = event.getPlayer();
         UUID uuid = player.getUniqueId();
+        main.skillsTable.createPlayer(player);
         createPlayerData(uuid);
     }
 

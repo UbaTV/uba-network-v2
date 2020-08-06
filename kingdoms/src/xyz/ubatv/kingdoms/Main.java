@@ -4,6 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.ubatv.kingdoms.events.JoinQuitEvent;
+import xyz.ubatv.kingdoms.location.LocationManager;
+import xyz.ubatv.kingdoms.location.LocationYML;
 import xyz.ubatv.kingdoms.mysql.MySQLConnection;
 import xyz.ubatv.kingdoms.mysql.MySQLYML;
 import xyz.ubatv.kingdoms.playerData.PlayerDataManager;
@@ -32,6 +34,8 @@ public class Main extends JavaPlugin {
     public PlayerSkillsTable skillsTable;
     public SkillsManager skillsManager;
     public ItemAPI itemAPI;
+    public LocationYML locationYML;
+    public LocationManager locationManager;
 
     @Override
     public void onEnable() {
@@ -83,6 +87,9 @@ public class Main extends JavaPlugin {
         skillsTable = new PlayerSkillsTable();
         skillsManager = new SkillsManager();
         itemAPI = new ItemAPI();
+        locationYML = new LocationYML();
+        locationYML.loadConfig();
+        locationManager = new LocationManager();
     }
 
     private void bungeeChannels(){
