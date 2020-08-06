@@ -20,6 +20,7 @@ import xyz.ubatv.kingdoms.skills.SkillsCommand;
 import xyz.ubatv.kingdoms.skills.SkillsManager;
 import xyz.ubatv.kingdoms.skills.combat.CombatGUIListener;
 import xyz.ubatv.kingdoms.skills.farming.FarmingGUIListener;
+import xyz.ubatv.kingdoms.skills.mining.MineListener;
 import xyz.ubatv.kingdoms.skills.mining.MiningGUIListener;
 import xyz.ubatv.kingdoms.utils.ItemAPI;
 import xyz.ubatv.kingdoms.utils.TextUtils;
@@ -65,6 +66,7 @@ public class Main extends JavaPlugin {
         pluginManager.registerEvents(new SkillsManager(), this);
         pluginManager.registerEvents(new SkillsCommand(), this);
         pluginManager.registerEvents(new MiningGUIListener(), this);
+        pluginManager.registerEvents(new MineListener(), this);
         pluginManager.registerEvents(new CombatGUIListener(), this);
         pluginManager.registerEvents(new FarmingGUIListener(), this);
     }
