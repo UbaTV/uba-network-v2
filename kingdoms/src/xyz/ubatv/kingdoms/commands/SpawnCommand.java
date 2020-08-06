@@ -20,8 +20,12 @@ public class SpawnCommand implements CommandExecutor {
             Player player = (Player) sender;
 
             if(main.locationManager.spawn == null){
-                player.sendMessage(main.textUtils.error + "Spawn location is not defined.");
-                return false;
+                if(main.locationManager.getLocation("spawn") == null){
+                    player.sendMessage(main.textUtils.error + "Spawn location is not defined.");
+                    return false;
+                }else{
+                    main.locationManager.spawn = main.locationManager.getLocation("spawn");
+                }
             }
 
             if(args.length == 1){

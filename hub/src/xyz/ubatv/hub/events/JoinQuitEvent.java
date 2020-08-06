@@ -25,7 +25,6 @@ public class JoinQuitEvent implements Listener {
 
         event.setJoinMessage("§8[§a§l+§8] §5" + player.getName());
 
-
         player.sendMessage(" ");
         main.textUtils.sendCenteredMessage(player, "§7Welcome to the " + main.textUtils.serverName + "§7!");
         player.sendMessage(" ");

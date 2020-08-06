@@ -1,5 +1,6 @@
 package xyz.ubatv.kingdoms.skills;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -31,7 +32,7 @@ public class SkillsManager implements Listener {
     }
 
     public int xpToLevel(int xp){
-        return xp >= levelXp(maxLevel) ? 30 : (int) Math.floor(Math.sqrt(Math.floorDiv(xp, 75)));
+        return xp >= ((maxLevel ^ 2) * 75) ? 30 : (int) Math.floor(Math.sqrt(Math.floorDiv(xp, 75)));
     }
 
     public boolean playerExists(UUID uuid){
