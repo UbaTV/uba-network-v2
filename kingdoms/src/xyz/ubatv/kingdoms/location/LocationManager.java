@@ -12,6 +12,8 @@ public class LocationManager {
 
     private Main main = Main.getInstance();
 
+    public Location spawn = null;
+
     public void setLocation(String locationName, Location location){
         FileConfiguration config = main.locationYML.getConfig();
         config.set(locationName + ".world", Objects.requireNonNull(location.getWorld()).getName());

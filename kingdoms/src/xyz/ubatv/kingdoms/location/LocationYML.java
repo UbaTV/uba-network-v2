@@ -31,6 +31,8 @@ public class LocationYML {
         }catch (InvalidConfigurationException | IOException e){
             e.printStackTrace();
         }
+
+        main.locationManager.spawn = main.locationManager.getLocation("spawn");
     }
 
     public void unload(){

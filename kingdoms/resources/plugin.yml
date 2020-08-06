@@ -13,3 +13,7 @@ commands:
     description: This command was developed by andreubita.
   setloc:
     description: This command was developed by andreubita
+  tploc:
+    description: This command was developed by andreubita.
+  spawn:
+    description: This command was developed by andreubita.

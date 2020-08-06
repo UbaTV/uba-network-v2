@@ -3,9 +3,12 @@ package xyz.ubatv.kingdoms;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import xyz.ubatv.kingdoms.commands.SpawnCommand;
 import xyz.ubatv.kingdoms.events.JoinQuitEvent;
 import xyz.ubatv.kingdoms.location.LocationManager;
 import xyz.ubatv.kingdoms.location.LocationYML;
+import xyz.ubatv.kingdoms.location.SetLocationCommand;
+import xyz.ubatv.kingdoms.location.TeleportLocationCommand;
 import xyz.ubatv.kingdoms.mysql.MySQLConnection;
 import xyz.ubatv.kingdoms.mysql.MySQLYML;
 import xyz.ubatv.kingdoms.playerData.PlayerDataManager;
@@ -68,6 +71,9 @@ public class Main extends JavaPlugin {
 
     private void registerCommands(){
         getCommand("skills").setExecutor(new SkillsCommand());
+        getCommand("setloc").setExecutor(new SetLocationCommand());
+        getCommand("tploc").setExecutor(new TeleportLocationCommand());
+        getCommand("spawn").setExecutor(new SpawnCommand());
     }
 
     public void preload(){
