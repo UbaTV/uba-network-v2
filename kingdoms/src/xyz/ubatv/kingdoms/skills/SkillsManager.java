@@ -27,12 +27,14 @@ public class SkillsManager implements Listener {
 
     public Map<UUID, PlayerSkills> skills = new HashMap<>();
 
+    // TODO REDO LEVEL SYSTEM
+
     public int levelXp(int level){
         return level >= maxLevel ? -1 : (level ^ 2) * 75;
     }
 
     public int xpToLevel(int xp){
-        return xp >= ((maxLevel ^ 2) * 75) ? 30 : (int) Math.floor(Math.sqrt(Math.floorDiv(xp, 75)));
+        return xp >= ((maxLevel ^ 2) * 75) ? 30 : (int) Math.floor(Math.sqrt(xp / 75));
     }
 
     public boolean playerExists(UUID uuid){

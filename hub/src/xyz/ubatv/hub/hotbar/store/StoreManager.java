@@ -43,6 +43,11 @@ public class StoreManager implements Listener {
         if(slot == 22){
             PvEGUI pveGUI = new PvEGUI(player);
             pveGUI.openInventory(player);
+            return;
+        }
+
+        if(slot == 50){
+            player.closeInventory();
         }
     }
 
@@ -84,6 +89,16 @@ public class StoreManager implements Listener {
                 player.sendMessage(main.textUtils.error + "You don't have sufficient funds.");
             }
             return;
+        }
+
+        if(slot == 48){
+            StoreGUI storeGUI = new StoreGUI(player);
+            storeGUI.openInventory(player);
+            return;
+        }
+
+        if(slot == 50){
+            player.closeInventory();
         }
     }
 }

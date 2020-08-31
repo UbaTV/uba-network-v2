@@ -38,6 +38,7 @@ public class BuildMode implements CommandExecutor, Listener {
                     buildMode.remove(player);
                     player.setGameMode(GameMode.ADVENTURE);
                     player.sendMessage(main.textUtils.right + "You just §cleft §5Build Mode");
+                    player.getInventory().clear();
                     main.hotbarManager.giveHotbar(player);
                 }else{
                     buildMode.add(player);
